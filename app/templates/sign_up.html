@@ -4,7 +4,7 @@
     <form action="" method="post" name="login">
         {{ form.hidden_tag() }}
         <p>
-            Please enter your email and new pw:<br>
+            Please enter your email and new password:<br>
             <div>
                 {{ form.email(size=80) }}
                 {% for error in form.email.errors %}

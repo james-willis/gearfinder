@@ -4,7 +4,7 @@ from re import split
 from app import app, bcrypt, db, lm, oid
 from .forms import LoginForm, SearchForm, SignupForm
 from .models import User
-from .mp_scanner import Post, get_matching_posts
+from .mp_scanner import get_matching_posts
 
 
 @app.before_request
@@ -15,8 +15,13 @@ def before_request():
 # Routing functions
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
-@login_required
 def index():
+    return render_template('index.html')
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
     user = g.user
     form = SearchForm()
     if form.validate_on_submit():
@@ -24,13 +29,16 @@ def index():
         db.session.commit()
         session['search_terms'] = parse_terms(form.search_terms.data)
         return redirect(url_for('results'))
-    return render_template('index.html',
+    if request.method == 'POST':
+        flash('Empty Search')
+    return render_template('search.html',
                            title='Home',
                            form=form,
                            user=user)
 
 
 @app.route('/results')
+@login_required
 def results():
     posts = get_matching_posts(session['search_terms'])
     return render_template('results.html',
@@ -42,7 +50,7 @@ def results():
 def login():
     if g.user is not None and g.user.is_authenticated:
         flash("Already signed in ")
-        return redirect(url_for('index'))
+        return redirect(url_for('search'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.get(form.email.data)
@@ -50,7 +58,7 @@ def login():
             login_user(user, remember=True)
             session['remember_me'] = form.remember_me.data
             session['search_terms'] = parse_terms(user.search_terms)
-            return redirect(url_for('index'))
+            return redirect(url_for('search'))
         else:
             flash('Wrong username/password combination')
     return render_template('login.html',
@@ -62,7 +70,7 @@ def login():
 def sign_up():
     if g.user is not None and g.user.is_authenticated:
         flash("Already signed in ")
-        return redirect(url_for('index'))
+        return redirect(url_for('search'))
     form = SignupForm()
     if form.validate_on_submit():
         user = User(email=form.email.data, password=form.password.data)
@@ -77,7 +85,7 @@ def sign_up():
 @app.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 
 # Login functions

@@ -62,7 +62,7 @@ def get_matching_posts(parameters):
 
         post_root = '(//tr[@bgcolor=\'#ffffff\' or @bgcolor=\'#f2f2f2\'])[{}]'.format(i)
         post.title = tree.xpath(post_root + '/td[3]/b/a/text()')[0]
-        post.link = tree.xpath(post_root + '/td[3]/b/a/attribute::href')[0]
+        post.link = _MOUNTAIN_PROJECT_URL + tree.xpath(post_root + '/td[3]/b/a/attribute::href')[0]
         post.age = tree.xpath(post_root + "/td[7]/small/text()")[0]
 
         if post.is_match(parameters):
