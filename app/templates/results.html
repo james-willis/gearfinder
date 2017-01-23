@@ -1,0 +1,10 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+{% block content %}
+    These are matching posts:
+    {% for post in posts %}
+    <p>
+      <a href={{ post.link }}>{{ post.title }}</a>
+    </p>
+    {% endfor %}
+{% endblock %}
