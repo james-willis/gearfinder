@@ -11,8 +11,17 @@ class LoginForm(FlaskForm):
 
 class SignupForm(FlaskForm):
     email = StringField('email', validators=[DataRequired()])
-    password = PasswordField('password', validators=[DataRequired(), EqualTo('confirm', message='Passwords must match')])
+    password = PasswordField('password', validators=[DataRequired(),
+                                                     EqualTo('confirm', message='Passwords must match')])
     confirm = PasswordField('Repeat Password')
+
 
 class SearchForm(FlaskForm):
     search_terms = StringField('search_terms', validators=[DataRequired()])
+
+
+class AccountForm(FlaskForm):
+    new_email = StringField('email')
+    current_password = PasswordField('current_password', validators=[DataRequired()])
+    new_password = PasswordField('new_password', validators=[EqualTo('confirm', message='Passwords must match')])
+    confirm = PasswordField('Repeat Password')

@@ -1,0 +1,27 @@
+<!--extends base layout-->
+{% extends 'base.html' %}
+{% block content %}
+<h1>Account Management</h1>
+<form action="" method="post" name="account_info">
+    {{ form.hidden_tag() }}
+    <p>
+        Update your email or password here:
+            {{ form.new_email(size=80) }}
+
+            {{ form.current_password(size=80) }}
+            {% for error in form.current_password.errors %}
+                <span style="color: red;">[{{error}}]</span>
+            {% endfor %}
+
+            {{ form.new_password(size=80) }}
+            {% for error in form.current_password.errors %}
+                <span style="color: red;">[{{error}}]</span>
+            {% endfor %}
+
+            {{ form.confirm(size=80) }}
+        </div><br>
+
+    </p>
+    <p><input type="submit" value="Update"></p>
+</form>
+{% endblock %}

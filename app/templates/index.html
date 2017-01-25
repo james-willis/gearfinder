@@ -3,14 +3,15 @@
 {% block content %}
     This is a web app to make finding gear on Mountain Project easier
     {% if g.user.is_authenticated %}
-    <a href="{{ url_for('login') }}">
-        <button>Sign In</button>
-    </a>
-    <a href="{{ url_for('sign_up') }}">
-        <button>Sign Up</button>
-    </a>
+        <a href="{{ url_for('search') }}">
+            <button>Search</button>
+        </a>
     {% else %}
-    <a href="{{ url_for('search') }}">
-        <button>Search</button>
-    </a>
+        <a href="{{ url_for('login') }}">
+            <button>Sign In</button>
+        </a>
+        <a href="{{ url_for('sign_up') }}">
+            <button>Sign Up</button>
+        </a>
+    {% endif %}
 {% endblock %}
