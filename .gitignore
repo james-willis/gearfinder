@@ -37,6 +37,9 @@
 ehthumbs.db
 Thumbs.db
 
+# IDE files #
+.ideas
+
 # local folders #
 venv/
 tmp/
