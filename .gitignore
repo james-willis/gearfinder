@@ -40,6 +40,9 @@ Thumbs.db
 # IDE files #
 .ideas
 
+# private credentials #
+credentials.py
+
 # local folders #
 venv/
 tmp/

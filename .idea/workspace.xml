@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="15507868-40f3-4d1e-a197-00ea33fcdca4" name="Default" comment="*  periodic email w/ opt-in working&#10;* updated README with email setup instructions">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="15507868-40f3-4d1e-a197-00ea33fcdca4" name="Default" comment="*  periodic email w/ opt-in working&#10;* updated README with email setup instructions" />
     <list id="0e1c973e-d4ae-456f-8027-d6485ae9d214" name="Rejected commit: Default" comment="*  periodic email w/ opt-in working&#10;* updated README with email setup instructions">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/email.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
@@ -566,7 +564,14 @@
       <option name="project" value="LOCAL" />
       <updated>1485154810961</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="*  periodic email w/ opt-in working&#10;* updated README with email setup instructions">
+      <created>1485548380095</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1485548380095</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TodoView">

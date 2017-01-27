@@ -7,15 +7,18 @@ site, or have email alerts sent to them when a new post matching their search pa
 inspired by or taken from [Miguel Grinberg's microblog tutorial](https://github.com/miguelgrinberg/microblog).
 
 ## Installing / Getting Started
-This program is written in python 3.5. It is recommended you run the app in a virtual environment. If you are not
+This program is written in Python 3.5. It is recommended you run the app in a virtual environment. If you are not
 familiar with how to use virtual environments, you can read up on them on 
 [The Hitchhiker's Guide to Python](http://docs.python-guide.org/en/latest/dev/virtualenvs/). Instructions for running
-the website locally are below:
+the website locally are below.
 
-#### Dependencies for running the app:
+#### Dependencies for running the app
+Install dependencies with pip in your virtual environment:
 ```shell
+$ source path/to/venv/bin/activate
 $ pip install flask
 $ pip install flask_bcrypt
+$ pip install flask_email
 $ pip install flask_login
 $ pip install flask_sqlalchemy
 $ pip install sqlalchemy_migrate
@@ -23,16 +26,29 @@ $ pip install flask-wtf
 $ pip install requests
 $ pip install lxml
 ```
-Note: If lxml give you installation issues...
+#### Set Up Private Credentials
+In the gearfinder folder you will need to create a file ```credentials.py``` that contains three variables
 
-#### Start up the server locally: 
+* ```SECRET_KEY```: The [secret key](http://stackoverflow.com/questions/22463939/demystify-flask-app-secret-key)
+* ```EMAIL_USERNAME```: Username to log into the sending email account
+* ```EMAIL_PASSWORD```: The password to log into the sending email account
+
+#### A Note on Email functionality
+If you are using your email account with a google account, you will need to
+[allow less secure apps](https://support.google.com/accounts/answer/6010255?hl=en).
+
+If you are using an email account that is not a google account, you will need to modify the mail configuration settings
+in ```config.py``` Documentation for flask-mail can be found [here](https://pythonhosted.org/Flask-Mail/).
+
+#### Start up the server locally
+ Run the run.py script in your virtual environment:
 ```shell
 $ source path/to/venv/bin/activate
 $ cd path/to/gearfinder
 $ python run.py
 ```
 
-Once the server is running you can access it at [localhost:5000](localhost:5000)
+Once the server is running you can access the site at [localhost:5000](localhost:5000)
 
 ## Running Tests
 To Come
@@ -42,7 +58,7 @@ To Come
 
 ## Features 
 * Improved buyer searching interface for Mountain Project's For Sale Forum
-* To come: Email alerts of new for sale postings relevant to your interests
+* Email alerts of new for sale postings relevant to your interests
 
 ## Configuration
 To Come

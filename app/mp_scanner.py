@@ -1,6 +1,5 @@
 from lxml import html
 import requests
-import sys
 
 _FREE_AND_FOR_SALE_URL = 'http://www.mountainproject.com' \
                          '/v/for-sale--for-free--want-to-buy/103989416'
@@ -58,7 +57,7 @@ def get_forum_page(pg_num):
     return html.fromstring(page.content)
 
 
-def get_matching_posts(parameters, pg_num, flags=''):
+def get_matching_posts(parameters, tree, flags=''):
     """
     This function scans The Mountain Project's For Sale forum for new posts
     whose title contains any of the search parameters.
@@ -66,11 +65,10 @@ def get_matching_posts(parameters, pg_num, flags=''):
     n - new posts only
 
     :param parameters: a list of strings representing each search parameter
-    :param pg_num: what page number to get the results from
+    :param tree: An html tree of a page of Mountain Project for sale posts
     :param flags: flags for toggling settings on what posts to find
     :return: a list of Posts that match at least one search parameter
     """
-    tree = get_forum_page(pg_num)
     posts = []
 
     for i in range(1, _POSTS_PER_PAGE):  # Xpath uses 1 indexed arrays
@@ -98,8 +96,4 @@ def write_links(matches):
     root_domain = _MOUNTAIN_PROJECT_URL
     for match in matches:
         link = '<a href=\"{}{}\">{}</a>'.format(root_domain, match.link, match.title)
-        print(link)
-
-
-if __name__ == "__main__":
-    main()
+        yield link

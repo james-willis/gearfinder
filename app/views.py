@@ -1,10 +1,17 @@
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask_login import login_user, logout_user, current_user, login_required
 from re import split
-from app import app, bcrypt, db, lm
-from .forms import AccountForm, LoginForm, SearchForm, SignupForm
+from app import bcrypt, db, lm
+from .email import start_mail_thread
+from .forms import AccountForm, EmailForm, LoginForm, SearchForm, SignupForm
 from .models import User
-from .mp_scanner import get_matching_posts
+from .mp_scanner import *
+
+
+@app.before_first_request
+def before_first_request():
+    print('starting mail thread')
+    start_mail_thread()
 
 
 @app.before_request
@@ -16,6 +23,9 @@ def before_request():
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
+    '''
+    Renders the home page of the site
+    '''
     return render_template('index.html',
                            title='Home')
 
@@ -23,13 +33,13 @@ def index():
 @app.route('/search', methods=['GET', 'POST'])
 @login_required
 def search():
+    '''
+    Renders the search page where the user can search with the search form or see the results of their email
+    '''
     user = g.user
     form = SearchForm()
     if form.validate_on_submit():
-        user.search_terms = str(form.search_terms.data)
-        db.session.commit()
-        session['search_terms'] = parse_terms(form.search_terms.data)
-        return redirect(url_for('results'))
+        return redirect(url_for('results', search_terms=form.search_terms.data))
     if request.method == 'POST':
         flash('Empty Search')
     return render_template('search.html',
@@ -39,9 +49,15 @@ def search():
 
 
 @app.route('/results')
+@app.route('/results/<string:search_terms>')
 @login_required
-def results():
-    posts = get_matching_posts(session['search_terms'])
+def results(search_terms=None):
+    if search_terms == None:
+        search_terms = session['search_terms']
+    # TODO fix default term
+    # TODO modify this so that it can be used to return multiple pages:
+    search_terms = parse_terms(search_terms)
+    posts = get_matching_posts(search_terms, 1)
     return render_template('results.html',
                            title='search results',
                            posts=posts)
@@ -51,16 +67,15 @@ def results():
 def login():
     if g.user is not None and g.user.is_authenticated:
         flash("Already signed in ")
-        return redirect(url_for('search'))
+        return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.get(form.email.data)
-
         if user and bcrypt.check_password_hash(user.password, str(form.password.data)):
             # TODO move validation to LoginForm class
             login_user(user, remember=True)
             session['remember_me'] = form.remember_me.data
-            session['search_terms'] = parse_terms(user.search_terms)
+            session['search_terms'] = user.get_search_terms()
             return redirect(url_for('search'))
         else:
             flash('Wrong username/password combination')
@@ -96,21 +111,41 @@ def sign_up():
 @login_required
 def account():
     user = g.user
-    form = AccountForm()
-    if form.validate_on_submit() and (bool(form.new_email.data) or bool(form.new_password.data)) \
-            and bcrypt.check_password_hash(user.password, str(form.current_password.data)):
+    account_form = AccountForm()
+    email_form = EmailForm()
+    if account_form.validate_on_submit() and (bool(account_form.new_email.data) or bool(account_form.new_password.data)) \
+            and bcrypt.check_password_hash(user.password, str(account_form.current_password.data)):
         # TODO move validation to AccountForm class
-        if form.new_email.data:
-            user.set_email(form.new_email.data)
+        if account_form.new_email.data:
+            user.set_email(account_form.new_email.data)
+
             flash('Email Updated')
-        if form.new_password.data:
-            user.set_password(form.new_password.data)
+        if account_form.new_password.data:
+            user.set_password(account_form.new_password.data)
             flash('Password Updated')
         db.session.commit()
+        return redirect(url_for('logout'))
     return render_template('account.html',
                            title='Account Settings',
-                           form=form)
+                           account_form=account_form,
+                           email_form=email_form)
 
+
+@app.route('/update_email', methods=['POST'])
+@login_required
+def update_email():
+    user = g.user
+    form = EmailForm()
+    if form.validate_on_submit():
+        # TODO make validation function that makes sure if opted in then you need to have non nulll search terms either
+        # in db or on form
+        if form.search_terms.data:
+            user.set_search_terms(form.search_terms.data)
+            session['search_terms'] = user.search_terms
+            flash('search terms updated to {}'.format(form.search_terms.data))
+        user.set_email_opt_in(form.email_opt_in.data)
+        db.session.commit()
+    return redirect(url_for('account'))
 
 
 @lm.user_loader

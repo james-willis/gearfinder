@@ -9,8 +9,8 @@
         </p>
         <p><input type="submit" value="search"></p>
     </form>
-    <a href="{{ url_for('results') }}">
-        <button>See Saved Search</button>
+    <a href="{{ url_for('results', search_terms=session['search_terms']) }}">
+        <button>See Email Search</button>
     </a>
     </body>
 {% endblock %}
