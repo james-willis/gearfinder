@@ -124,7 +124,7 @@ def account():
     account_form = AccountForm()
     email_form = EmailForm()
     if account_form.validate_on_submit() and (bool(account_form.new_email.data) or bool(account_form.new_password.data)) \
-            and bcrypt.check_password_hash(user.password, str(account_form.current_password.data)):
+            and bcrypt.check_password_hash(user.get_password, str(account_form.current_password.data)):
         # TODO move validation to AccountForm class
         if account_form.new_email.data:
             user.set_email(account_form.new_email.data)

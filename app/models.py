@@ -5,7 +5,7 @@ class User(db.Model):
     __tablename__ = 'user'
 
     email = db.Column(db.String(120), index=True, unique=True, primary_key=True)
-    password = db.Column(db.String(128))
+    password = db.Column(db.Binary(128))
     search_terms = db.Column(db.String(120))
     email_opt_in = db.Column(db.Boolean)
     posts = db.relationship('Post', backref='recipient', lazy='dynamic')
@@ -37,6 +37,9 @@ class User(db.Model):
 
     def get_search_terms(self):
         return list(filter(bool, split('[.,\s]', str(self.search_terms))))
+
+    def get_password(self):
+        return str(self.password).encode('utf-8')
 
     def set_password(self, raw_password):
         self.password = bcrypt.generate_password_hash(raw_password.encode('utf-8'))
