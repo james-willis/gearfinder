@@ -39,7 +39,7 @@ class User(db.Model):
         return list(filter(bool, split('[.,\s]', str(self.search_terms))))
 
     def set_password(self, raw_password):
-        self.password = bcrypt.generate_password_hash(raw_password)
+        self.password = bcrypt.generate_password_hash(raw_password.encode('utf-8'))
 
     def set_email(self, email):
         self.email = email
