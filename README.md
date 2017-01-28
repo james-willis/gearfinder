@@ -29,13 +29,14 @@ $ pip install flask-wtf
 $ pip install requests
 $ pip install lxml
 ```
-#### Set Up Private Credentials
+#### Set Up Environmental Variables
 In your environment you will need to define three variables that the app will read from the os. Note the double quotes in the bash syntax, they're very important.
 
 ```shell
 export SECRET_KEY="super-secret-long-string" # The [secret key](http://stackoverflow.com/questions/22463939/demystify-flask-app-secret-key)
 export EMAIL_USERNAME="\<username\>" # Username to log into the sending email account
-export EMAIL_PASSWORD:="\<password\>" # The password to log into the sending email account
+export EMAIL_PASSWORD="\<password\>" # The password to log into the sending email account
+export PORT="5000" # or any other valid port number
 ```
 
 #### A Note on Email functionality

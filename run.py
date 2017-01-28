@@ -1,3 +1,3 @@
 import os
 from app import app
-app.run(port=os.environ.get("PORT"), debug=True)
+app.run(port=int(os.environ.get("PORT")), debug=True)
