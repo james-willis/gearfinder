@@ -30,11 +30,13 @@ $ pip install requests
 $ pip install lxml
 ```
 #### Set Up Private Credentials
-In the gearfinder folder you will need to create a file ```credentials.py``` that contains three variables
+In your environment you will need to define three variables that the app will read from the os. Note the double quotes in the bash syntax, they're very important.
 
-* ```SECRET_KEY```: The [secret key](http://stackoverflow.com/questions/22463939/demystify-flask-app-secret-key)
-* ```EMAIL_USERNAME```: Username to log into the sending email account
-* ```EMAIL_PASSWORD```: The password to log into the sending email account
+```shell
+export SECRET_KEY="super-secret-long-string" # The [secret key](http://stackoverflow.com/questions/22463939/demystify-flask-app-secret-key)
+export EMAIL_USERNAME="\<username\>" # Username to log into the sending email account
+export EMAIL_PASSWORD:="\<password\>" # The password to log into the sending email account
+```
 
 #### A Note on Email functionality
 If you are using your email account with a google account, you will need to

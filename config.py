@@ -1,7 +1,7 @@
 import os
-import credentials
 WTF_CSRF_ENABLED = True
-SECRET_KEY = credentials.SECRET_KEY
+print ( os.environ.get("SECRET_KEY"))
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -18,7 +18,7 @@ MAIL_SERVER = 'smtp.googlemail.com'
 MAIL_PORT = 465
 MAIL_USE_TLS = False
 MAIL_USE_SSL = True
-MAIL_USERNAME = credentials.EMAIL_USERNAME
-MAIL_PASSWORD = credentials.EMAIL_PASSWORD
+MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
+MAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 
 SENDING_EMAIL = 'jimwillis95@gmail.com'
