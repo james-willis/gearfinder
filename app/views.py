@@ -80,7 +80,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.get(form.email.data)
-        if user and bcrypt.check_password_hash(user.password, str(form.password.data).encode('utf-8')):
+        if user and bcrypt.check_password_hash(user.get_password(), str(form.password.data).encode('utf-8')):
             # TODO move validation to LoginForm class
             login_user(user, remember=True)
             session['remember_me'] = form.remember_me.data
@@ -106,10 +106,10 @@ def sign_up():
     form = SignupForm()
     if form.validate_on_submit():
         user = User(email=form.email.data, password=form.password.data)
-        print(user.get_password())
+        print(str(user.get_password()))
         db.session.add(user)
         db.session.commit()
-        print(user.get_password())
+        print(str(user.get_password()))
         flash('You may now log in')
         return redirect(url_for('login'))
     return render_template('sign_up.html',
