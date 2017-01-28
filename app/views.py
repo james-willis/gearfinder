@@ -106,8 +106,10 @@ def sign_up():
     form = SignupForm()
     if form.validate_on_submit():
         user = User(email=form.email.data, password=form.password.data)
+        print(user.password)
         db.session.add(user)
         db.session.commit()
+        print(user.password)
         flash('You may now log in')
         return redirect(url_for('login'))
     return render_template('sign_up.html',
