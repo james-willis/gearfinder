@@ -78,7 +78,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.get(form.email.data)
-        if user and bcrypt.check_password_hash(user.password, str(form.password.data)):
+        if user and bcrypt.check_password_hash(user.password, str(form.password.data).encode('utf-8')):
             # TODO move validation to LoginForm class
             login_user(user, remember=True)
             session['remember_me'] = form.remember_me.data
