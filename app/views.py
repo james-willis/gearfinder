@@ -15,9 +15,11 @@ from .mp_scanner import *
 def before_first_request():
     print('starting mail thread')
     start_mail_thread()
-    if not isfile('./app.db'):
-        print('initializing database')
-        create_db()
+
+    # TODO fix this code for Heroku's db
+    # if not isfile('./app.db'):
+    #     print('initializing database')
+    #     create_db()
 
 
 @app.before_request
