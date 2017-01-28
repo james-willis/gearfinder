@@ -1,8 +1,11 @@
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask_login import login_user, logout_user, current_user, login_required
+from os.path import isfile
 from re import split
-from app import bcrypt, db, lm
-from .email import start_mail_thread
+
+from db_create import create_db
+from app import app, bcrypt, db, lm
+from .email_ import start_mail_thread
 from .forms import AccountForm, EmailForm, LoginForm, SearchForm, SignupForm
 from .models import User
 from .mp_scanner import *
@@ -12,6 +15,9 @@ from .mp_scanner import *
 def before_first_request():
     print('starting mail thread')
     start_mail_thread()
+    if not isfile('./app.db'):
+        print('initializing database')
+        create_db()
 
 
 @app.before_request
@@ -53,14 +59,15 @@ def search():
 @login_required
 def results(search_terms=None):
     if search_terms == None:
-        search_terms = session['search_terms']
+        search_terms = g.user.get_search_terms_str
     # TODO fix default term
     # TODO modify this so that it can be used to return multiple pages:
-    search_terms = parse_terms(search_terms)
-    posts = get_matching_posts(search_terms, 1)
+    search_term_list = parse_terms(search_terms)
+    posts = get_matching_posts(search_term_list, get_forum_page(1))
     return render_template('results.html',
                            title='search results',
-                           posts=posts)
+                           posts=posts,
+                           search_terms=search_terms)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -75,7 +82,6 @@ def login():
             # TODO move validation to LoginForm class
             login_user(user, remember=True)
             session['remember_me'] = form.remember_me.data
-            session['search_terms'] = user.get_search_terms()
             return redirect(url_for('search'))
         else:
             flash('Wrong username/password combination')
@@ -141,7 +147,6 @@ def update_email():
         # in db or on form
         if form.search_terms.data:
             user.set_search_terms(form.search_terms.data)
-            session['search_terms'] = user.search_terms
             flash('search terms updated to {}'.format(form.search_terms.data))
         user.set_email_opt_in(form.email_opt_in.data)
         db.session.commit()

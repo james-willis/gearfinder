@@ -35,6 +35,7 @@ class Post:
         return False
 
     def is_new_match(self, parameters):
+        # TODO fix this, returns any post recently replied to
         """
         Determines if a post contains one of the search parameters and is new (< 5
         minutes of age), and is not a buyer thread
@@ -95,5 +96,5 @@ def write_links(matches):
     """
     root_domain = _MOUNTAIN_PROJECT_URL
     for match in matches:
-        link = '<a href=\"{}{}\">{}</a>'.format(root_domain, match.link, match.title)
+        link = '<a href=\"{}\">{}</a>'.format(match.link, match.title)
         yield link

@@ -1,16 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
-    <body>
-    <h1>Hello, {{ user.email }}!</h1>
     <form action="" method="post" name="index">
+        <h2>Search</h2>
         {{ form.hidden_tag() }}
-        <p>
-            Enter search terms here: {{ form.search_terms(size=150) }}
-        </p>
-        <p><input type="submit" value="search"></p>
+        <div class="form-group">
+            <label for="search" class ="sr-only">Search Terms</label>
+            {{ form.search_terms(id="search", type="search", class="form-control",
+                                    placeholder="Enter your Search Here") }}
+        </div>
+        <input class="btn btn-primary" type="submit" value="search">
+        {% if g.user.get_search_terms_str()%}
+        <a href="{{ url_for('results', search_terms=g.user.get_search_terms_str()) }}">
+                <button class="btn btn-primary">See Saved Search</button>
+            </a>
+        <div class="container">
+            <small>Your saved Search is "{{ g.user.get_search_terms_str() }}"</small>
+        </div>        
+        {% endif %}
     </form>
-    <a href="{{ url_for('results', search_terms=session['search_terms']) }}">
-        <button>See Email Search</button>
-    </a>
-    </body>
 {% endblock %}

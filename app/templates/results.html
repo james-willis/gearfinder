@@ -1,10 +1,10 @@
 <!-- extend base layout -->
 {% extends "base.html" %}
 {% block content %}
-    These are matching posts:
+    <h2>Results for {{ search_terms }}</h2>
+    <ul class="list-group">
     {% for post in posts %}
-    <p>
-      <a href={{ post.link }}>{{ post.title }}</a>
-    </p>
+      <a href={{ post.link }}><li class="list-group-item">{{ post.title }}</li></a>
     {% endfor %}
+    </ul>
 {% endblock %}

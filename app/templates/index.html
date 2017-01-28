@@ -1,17 +1,19 @@
 <!-- extend base layout -->
 {% extends "base.html" %}
 {% block content %}
-    This is a web app to make finding gear on Mountain Project easier
-    {% if g.user.is_authenticated %}
-        <a href="{{ url_for('search') }}">
-            <button>Search</button>
-        </a>
-    {% else %}
-        <a href="{{ url_for('login') }}">
-            <button>Sign In</button>
-        </a>
-        <a href="{{ url_for('sign_up') }}">
-            <button>Sign Up</button>
-        </a>
-    {% endif %}
+<section class="jumbotron">
+    <div class="container">
+        <div class ="row text-center">
+        This is a web app to make finding gear for sale on Mountain Project easier
+        </div>
+        <div class="row text-center">
+            {% if g.user.is_authenticated %}
+                <a href="{{ url_for('search') }}"><button>Search</button></a>
+            {% else %}
+                <a href="{{ url_for('login') }}"><button>Sign In</button></a>
+                <a href="{{ url_for('sign_up') }}"><button>Sign Up</button></a>
+            {% endif %}
+        </div>
+    </div>
+</section>
 {% endblock %}

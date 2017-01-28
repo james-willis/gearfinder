@@ -5,7 +5,10 @@ Gearfinder is a web app built on Flask for searching Mountain Project's used gea
 buyers aware sooner of new posts relevant to their interests. Buyers can search the For Sale forum at any time on the 
 site, or have email alerts sent to them when a new post matching their search parameters is posted. Elements of code are
 inspired by or taken from [Miguel Grinberg's microblog tutorial](https://github.com/miguelgrinberg/microblog).
-
+## Known Bugs
+* When a post is replied to, it registers as new again. I'm currently looking into the best way to determine
+that a post is new without missing those with replies within the first 5 minutes of posting. 
+*Only the first page of Mountain Project's For Sale section can be searched at this time
 ## Installing / Getting Started
 This program is written in Python 3.5. It is recommended you run the app in a virtual environment. If you are not
 familiar with how to use virtual environments, you can read up on them on 

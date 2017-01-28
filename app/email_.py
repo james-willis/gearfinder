@@ -16,12 +16,12 @@ def email_new_posts():
         msg = Message('test subject', sender=_SENDING_EMAIL, recipients=[user.email])
         msg.html = '<h1> Hello this is a test email with new relevant post hopefully</h1>'
 
-        posts = get_matching_posts(user.get_search_terms(), tree, '')
+        posts = get_matching_posts(user.get_search_terms(), tree, 'n')
         if len(posts) == 0 or not user.email_opt_in:
             continue
 
         for link in write_links(posts):
-            msg.html += "\n{}".format(link)
+            msg.html += "<br>{}".format(link)
 
         with app.app_context():
             mail.send(msg)
@@ -29,13 +29,10 @@ def email_new_posts():
 
 def mail_thread():
     Timer(300, mail_thread).start()
-    print('sending new emails...')
     email_new_posts()
-    print('new emails sent')
 
 
 def start_mail_thread():
     email_thread = Thread(target=mail_thread)
     email_thread.daemon = True
     email_thread.start()
-    print('thread started')

@@ -14,6 +14,8 @@ class User(db.Model):
     def __init__(self, email, password):
         self.set_email(email)
         self.set_password(password)
+        self.set_search_terms('')
+        self.set_email_opt_in(False)
 
     @property
     def is_authenticated(self):
@@ -29,6 +31,9 @@ class User(db.Model):
 
     def get_id(self):
         return str(self.email)
+
+    def get_search_terms_str(self):
+        return self.search_terms
 
     def get_search_terms(self):
         return list(filter(bool, split('[.,\s]', str(self.search_terms))))
