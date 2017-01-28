@@ -58,7 +58,7 @@ class Post(db.Model):
     __tablename__ = 'post'
 
     id = db.Column(db.Integer, primary_key=True)
-    owner = db.Column(db.Integer, db.ForeignKey('user.email'))
+    owner = db.Column(db.String(120), db.ForeignKey('user.email'))
     title = db.Column(db.String(600))
     link = db.Column(db.String(600))
     sent = db.Column(db.Boolean)
