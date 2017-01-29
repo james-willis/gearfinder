@@ -79,7 +79,7 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.get(form.email.data)
+        user = User.query.get(str(form.email.data))
         if user and bcrypt.check_password_hash(user.get_password(), str(form.password.data).encode('utf-8')):
             # TODO move validation to LoginForm class
             login_user(user, remember=True)
