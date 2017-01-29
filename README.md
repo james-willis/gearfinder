@@ -1,4 +1,4 @@
-# Gearfinder
+# [Gearfinder](https://github.com/james-willis/gearfinder)
 > A Flask app for buying gear on MountainProject.com
 
 Gearfinder is a web app built on Flask for searching Mountain Project's used gear sale forum. The app aims to make 
