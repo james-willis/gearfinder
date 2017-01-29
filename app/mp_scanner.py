@@ -9,10 +9,11 @@ _POSTS_PER_PAGE = 25
 
 
 class Post:
-    def __init__(self, title='', link='', age=""):
+    def __init__(self, title='', link='', age="", replies=0):
         self.title = title
         self.link = link
         self.age = age
+        self.replies = int(replies)
 
     def is_match(self, parameters):
         """
@@ -38,11 +39,11 @@ class Post:
         # TODO fix this, returns any post recently replied to
         """
         Determines if a post contains one of the search parameters and is new (< 5
-        minutes of age), and is not a buyer thread
+        minutes of age, 0 replies), and is not a buyer thread.
         :param parameters: a list of strs containing the search parameters
         :return: a bool indicating if the post is a match
                 """
-        return self.is_match(parameters) and self.age == _NEW_POST_TEXT
+        return self.is_match(parameters) and self.age == _NEW_POST_TEXT and self.replies == 0
 
 
 def get_forum_page(pg_num):
@@ -79,6 +80,7 @@ def get_matching_posts(parameters, tree, flags=''):
         post.title = tree.xpath(post_root + '/td[3]/b/a/text()')[0]
         post.link = _MOUNTAIN_PROJECT_URL + tree.xpath(post_root + '/td[3]/b/a/attribute::href')[0]
         post.age = tree.xpath(post_root + "/td[7]/small/text()")[0]
+        post.replies = tree.xpath(post_root + "/td[4]/text()")[0]
 
         if 'n' not in flags and post.is_match(parameters):
             posts.append(post)

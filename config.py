@@ -19,7 +19,5 @@ MAIL_USE_TLS = False
 MAIL_USE_SSL = True
 MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
 MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
-print(MAIL_USERNAME)
-print(MAIL_PASSWORD)
 
 SENDING_EMAIL = 'jimwillis95@gmail.com'
