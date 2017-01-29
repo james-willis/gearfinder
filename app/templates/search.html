@@ -10,8 +10,8 @@
         </div>
         <input class="btn btn-primary" type="submit" value="search">
         {% if g.user.get_search_terms_str()%}
-        <a href="{{ url_for('results', search_terms=g.user.get_search_terms_str()) }}">
-                <button class="btn btn-primary">See Saved Search</button>
+        <a class="btn btn-primary" href="{{ url_for('results', search_terms=g.user.get_search_terms_str()) }}">
+        See Saved Search
             </a>
         <div class="container">
             <small>Your saved Search is "{{ g.user.get_search_terms_str() }}"</small>

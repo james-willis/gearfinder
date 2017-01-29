@@ -14,7 +14,7 @@ def email_new_posts():
 
     for user in users:
         msg = Message('test subject', sender=_SENDING_EMAIL, recipients=[user.email])
-        msg.html = '<h1> Hello this is a test email with new relevant post hopefully</h1>'
+        msg.html = '<h1>Gearfinder</h1><h2>Here are new Mountain Projet For Sale posts:</h2>'
 
         posts = get_matching_posts(user.get_search_terms(), tree, 'n')
         if len(posts) == 0 or not user.email_opt_in:
