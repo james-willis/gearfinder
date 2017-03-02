@@ -12,9 +12,13 @@ class AccountForm(FlaskForm):
 
 
 class EmailForm(FlaskForm):
-    # TODO make it pull optin from db
     search_terms = StringField('search_terms')
-    email_opt_in = BooleanField('email_opt_in', default=False)
+    email_opt_in = BooleanField('email_opt_in', default=True)
+    # def __init__(self, search_terms='', opt_in=False, *args, **kwargs):
+    #     super(EmailForm, self).__init__(*args, **kwargs)
+    #     self.search_terms.default = search_terms
+    #     self.email_opt_in.default = opt_in
+    #     self.process()
 
 
 class LoginForm(FlaskForm):

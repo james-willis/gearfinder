@@ -3,19 +3,23 @@
     <form action="" method="post" name="index">
         <h2>Search</h2>
         {{ form.hidden_tag() }}
+
         <div class="form-group">
             <label for="search" class ="sr-only">Search Terms</label>
             {{ form.search_terms(id="search", type="search", class="form-control",
                                     placeholder="Enter your Search Here") }}
         </div>
+
         <input class="btn btn-primary" type="submit" value="search">
+
         {% if g.user.get_search_terms_str()%}
         <a class="btn btn-primary" href="{{ url_for('results', search_terms=g.user.get_search_terms_str()) }}">
-        See Saved Search
+        See Subscribed Search
             </a>
-        <div class="container">
-            <small>Your saved Search is "{{ g.user.get_search_terms_str() }}"</small>
-        </div>        
+            <br>
+            <small>Your subscribed search is "{{ g.user.get_search_terms_str() }}"</small>
+            <br>
+            <small><a href="{{ url_for('account') }}">Update Subscribed Search</a></small>
         {% endif %}
     </form>
 {% endblock %}

@@ -1,24 +1,27 @@
 <!-- extend base layout -->
 {% extends "base.html" %}
 {% block content %}
-    <form class="form-horizontal" action="" method="POST" name="login">
+    <form class="form-signin" action="" method="POST" name="login">
         {{ form.hidden_tag() }}
+
         <h2 class="form-signin-heading">Sign Up</h2>
+
         <label for="inputEmail" class="sr-only">Email address</label>
-        {{ form.email(id="inputEmail", class="form-control", placeholder="Email") }}
+        {{ form.email(id="inputEmail", class="form-control", type="email", autofocus="", placeholder="Email address") }}
         {% for error in form.email.errors %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}
 
 
-        <label for="inputPassword" class="sr-only">Password</label>
-        {{ form.password(id="inputPassword", class="form-control", placeholder="Password") }}
+        <label for="inputPasswordSignUp" class="sr-only">Password</label>
+        {{ form.password(id="inputPasswordSignUp", class="form-control", type="password", placeholder="Password") }}
         {% for error in form.password.errors %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}
 
-        <label for="inputPasswordConfirm" class="sr-only">Confirm Password</label>
-        {{ form.confirm(id="inuputPasswordConfirm", class="form-control", placeholder="Confirm") }}
+        <label for="inputPasswordConfirmSignUp" class="sr-only">Confirm Password</label>
+        {{ form.confirm(id="inputPasswordConfirmSignUp", class="form-control", type="password", placeholder="Confirm Password") }}
+
         <input class="btn btn-lg btn-primary btn-block" type="submit" value="Sign Up">
     </form>
 {% endblock %}

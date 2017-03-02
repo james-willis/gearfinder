@@ -1,24 +1,28 @@
 <!-- extend base layout -->
 {% extends "base.html" %}
 {% block content %}
-    <form class = "form-horizontal" action="" method="POST" name="login">
+    <form class = "form-signin" action="" method="POST" name="login">
         {{ form.hidden_tag() }}
+
         <h2 class="form-signin-heading">Sign In</h2>
+
         <label for="inputEmail" class="sr-only">Email address</label>
-        {{ form.email(id="inputEmail", class="form-control", placeholder="Email") }}
+        {{ form.email(id="inputEmail", class="form-control", type="email", autofocus="", placeholder="Email address") }}
         {% for error in form.email.errors %}
-            <span style="color: red;">[{{error}}]</span>
+        <span style="color: red;">[{{error}}]</span>
         {% endfor %}
 
         <label for="inputPassword" class="sr-only">Password</label>
-        {{ form.password(id="inputPassword", class="form-control", placeholder="Password") }}
+        {{ form.password(id="inputPassword", class="form-control", type="password", placeholder="Password") }}
         {% for error in form.password.errors %}
-            <span style="color: red;">[{{error}}]</span>
+        <span style="color: red;">[{{error}}]</span>
         {% endfor %}
-        <div>{{ form.remember_me(type="checkbox", value="remember-me") }} Remember Me</div>
+
+        <div class="checkbox"><label>
+        {{ form.remember_me(type="checkbox", value="remember-me") }} Remember Me
+        </label></div>
+
         <input class="btn btn-lg btn-primary btn-block" type="submit" value="Sign In">
-    </form>
-    <a href="{{ url_for('sign_up') }}">
-        <button class="btn btn-lg btn-primary btn-block">Sign Up</button>
-    </a>    
+        <small>If you dont have an account, you can <a href="{{ url_for('sign_up') }}">Sign Up</a>.</small>
+    </form>   
 {% endblock %}

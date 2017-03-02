@@ -4,7 +4,7 @@
     <h2>Results for {{ search_terms }}</h2>
     <ul class="list-group">
     {% for post in posts %}
-      <a href={{ post.link }}><li class="list-group-item">{{ post.title }}</li></a>
+      <a href="{{ post.link }}" target="_blank"><li class="list-group-item">{{ post.title }}</li></a>
     {% endfor %}
     </ul>
 {% endblock %}
