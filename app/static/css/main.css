@@ -7,6 +7,12 @@ body {
 	overflow: hidden;
 	}
 
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 600px; /* or 950px */
+}
+
 body > .container {
 padding: 60px 15px 0;
 }

@@ -4,17 +4,17 @@
         <h2>Search</h2>
         {{ form.hidden_tag() }}
 
-        <div class="form-group">
+        <fieldset class="form-group">
             <label for="search" class ="sr-only">Search Terms</label>
-            {{ form.search_terms(id="search", type="search", class="form-control",
+            {{ form.search_terms(id="search", class="form-control", type="search", autoselect="",
                                     placeholder="Enter your Search Here") }}
-        </div>
+        </fieldset>
 
-        <input class="btn btn-primary" type="submit" value="search">
+        <input class="btn btn-primary" type="submit" value="Search">
 
         {% if g.user.get_search_terms_str()%}
-        <a class="btn btn-primary" href="{{ url_for('results', search_terms=g.user.get_search_terms_str()) }}">
-        See Subscribed Search
+            <a class="btn btn-primary" href="{{ url_for('results', search_terms=g.user.get_search_terms_str()) }}">
+                See Subscribed Search
             </a>
             <br>
             <small>Your subscribed search is "{{ g.user.get_search_terms_str() }}"</small>
