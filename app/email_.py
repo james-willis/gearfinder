@@ -25,7 +25,7 @@ def email_new_posts():
     print('sending ze emails')
     for user in users:
         
-        posts = get_matching_posts(user.get_search_terms(), tree)
+        posts = get_matching_posts(user.get_search_terms(), tree, 'n')
         if posts and user.email_opt_in:
             message = {
                 "subject": "test subject",
