@@ -1,5 +1,4 @@
 web: gunicorn app:app
-worker: celery -A app.celery worker
-beat: celery -A app.celery beat
+worker: celery -A app.celery worker -B
 init: python db_create.py
 upgrade: python db_upgrade.py
