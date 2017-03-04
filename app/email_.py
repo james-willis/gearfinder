@@ -8,12 +8,12 @@ from .models import User
 from .mp_scanner import *
 
 _SENDING_EMAIL = app.config['SENDING_EMAIL']
-_MSG_BODY = '<h1>Gearfinder</h1><h2>Here are new Mountain Projet For Sale posts:</h2>'
+_MSG_BODY = '<h1>Gearfinder</h1><h2>Here are new Mountain Project For Sale posts:</h2>'
 
 celery.conf.beat_schedule = {
     'email-updates': {
         'task': 'app.email_.email_new_posts',
-        'schedule': timedelta(seconds=300)
+        'schedule': timedelta(seconds=20)
     },
 }
 
@@ -22,10 +22,9 @@ def email_new_posts():
 
     tree = get_forum_page(1)  # new posts always on first page
     users = db.session.query(User).all()
-    print('sending ze emails')
     for user in users:
         
-        posts = get_matching_posts(user.get_search_terms(), tree, 'n')
+        posts = get_matching_posts(user.get_search_terms(), tree)
         if posts and user.email_opt_in:
             message = {
                 "subject": "test subject",
