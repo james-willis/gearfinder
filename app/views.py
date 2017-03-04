@@ -13,11 +13,7 @@ from .mp_scanner import *
 
 @app.before_first_request
 def before_first_request():
-    # This doesnt work with gunicorn(multiple email threads)
-    # This requires someone to visit site to start emailing
-    print('starting mail thread')
-    start_mail_thread()
-
+    pass
     # TODO fix this code for Heroku's db
     # if not isfile('./app.db'):
     #     print('initializing database')
