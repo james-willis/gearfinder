@@ -13,7 +13,7 @@ _MSG_BODY = '<h1>Gearfinder</h1><h2>Here are new Mountain Project For Sale posts
 celery.conf.beat_schedule = {
     'email-updates': {
         'task': 'app.email_.email_new_posts',
-        'schedule': timedelta(seconds=20)
+        'schedule': timedelta(seconds=300)
     },
 }
 
@@ -24,7 +24,7 @@ def email_new_posts():
     users = db.session.query(User).all()
     for user in users:
         
-        posts = get_matching_posts(user.get_search_terms(), tree)
+        posts = get_matching_posts(user.get_search_terms(), tree, "n")
         if posts and user.email_opt_in:
             message = {
                 "subject": "test subject",
@@ -44,6 +44,7 @@ def send_email(message):
     msg.html = message["html"]
     with app.app_context():
         mail.send(msg)
+    return message["recipients"][0]
 
 def mail_thread():
     Timer(300, mail_thread).start()
