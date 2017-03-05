@@ -1,5 +1,3 @@
-from celery.schedules import crontab
-from datetime import timedelta
 from threading import Thread, Timer
 from flask_mail import Message
 
