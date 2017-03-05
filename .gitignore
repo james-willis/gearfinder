@@ -36,14 +36,16 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
+*.swp
 
-# IDE files #
-.ideas
-
-# celery generated files #
-*celery*
-
-# local folders #
+# IDE and venv files #
+######################
+.idea/
 venv/
+
+# venv and project specific files #
+###################################
+celerybeat-schedule
+db_repository
 tmp/
 redis-stable/
