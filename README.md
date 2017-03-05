@@ -10,8 +10,6 @@ inspired by or taken from [Miguel Grinberg's microblog tutorial](https://github.
 
 * Only the first page of Mountain Project's For Sale section can be searched at this time
 
-* Trying to create an account with an email that already exists will return an error
-
 ## Installing / Getting Started
 This program is written in Python 3.6. It is recommended you run the app in a virtual environment. If you are not
 familiar with how to use virtual environments, you can read up on them on 
