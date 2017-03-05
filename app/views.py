@@ -23,13 +23,13 @@ def before_request():
 
 # Routing functions
 @app.route('/', methods=['GET', 'POST'])
-@app.route('/index', methods=['GET', 'POST'])
+@app.route('/index/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html',
                            title='Home')
 
 
-@app.route('/search', methods=['GET', 'POST'])
+@app.route('/search/', methods=['GET', 'POST'])
 @login_required
 def search():
     user = g.user
@@ -45,10 +45,11 @@ def search():
 
 
 @app.route('/results')
-@app.route('/results/<string:search_terms>')
+@app.route('/results/<string:search_terms>/')
 @login_required
 def results(search_terms=None):
     if search_terms == None:
+        flash("Please ")
         return redirect(url_for('search'))
     # TODO modify this so that it can be used to return multiple pages:
     search_term_list = parse_terms(search_terms)
@@ -59,7 +60,7 @@ def results(search_terms=None):
                            search_terms=search_terms)
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
     if g.user is not None and g.user.is_authenticated:
         flash("Already signed in")
@@ -79,13 +80,13 @@ def login():
                            form=form)
 
 
-@app.route('/logout')
+@app.route('/logout/')
 def logout():
     logout_user()
     return redirect(url_for('login'))
 
 
-@app.route('/signup', methods=['GET', 'POST'])
+@app.route('/signup/', methods=['GET', 'POST'])
 def sign_up():
     # redirect signed in users away from sign up page
     if g.user is not None and g.user.is_authenticated:
@@ -108,7 +109,7 @@ def sign_up():
                            form=form)
 
 
-@app.route('/account', methods=['GET', 'POST'])
+@app.route('/account/', methods=['GET', 'POST'])
 @login_required
 def account():
     account_form = AccountForm()
@@ -119,7 +120,7 @@ def account():
                            email_form=email_form)
 
 
-@app.route('/update_credentials', methods=['POST'])
+@app.route('/update_credentials/', methods=['POST'])
 @login_required
 def update_credentials():
 
@@ -144,7 +145,7 @@ def update_credentials():
     return redirect(url_for('account'))
 
 
-@app.route('/update_email_settings', methods=['POST'])
+@app.route('/update_email_settings/', methods=['POST'])
 @login_required
 def update_email_settings():
 
