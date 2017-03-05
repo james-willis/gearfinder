@@ -3,7 +3,6 @@ from flask_login import login_user, logout_user, current_user, login_required
 from os.path import isfile
 from re import split
 
-from db_create import create_db
 from app import app, bcrypt, db, lm
 from .email_ import start_mail_thread
 from .forms import AccountForm, EmailForm, LoginForm, SearchForm, SignupForm
@@ -14,10 +13,7 @@ from .mp_scanner import *
 @app.before_first_request
 def before_first_request():
     pass
-    # TODO fix this code for Heroku's db
-    # if not isfile('./app.db'):
-    #     print('initializing database')
-    #     create_db()
+    # TODO make this initialize db is db isnt initalized
 
 
 @app.before_request
@@ -53,8 +49,7 @@ def search():
 @login_required
 def results(search_terms=None):
     if search_terms == None:
-        search_terms = g.user.get_search_terms_str
-    # TODO fix default term
+        return redirect(url_for('search'))
     # TODO modify this so that it can be used to return multiple pages:
     search_term_list = parse_terms(search_terms)
     posts = get_matching_posts(search_term_list, get_forum_page(1))

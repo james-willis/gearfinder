@@ -1,4 +1,5 @@
 from lxml import html
+
 import requests
 
 _FREE_AND_FOR_SALE_URL = 'http://www.mountainproject.com' \

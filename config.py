@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 import os
 
 WTF_CSRF_ENABLED = True
@@ -28,10 +30,17 @@ if not (MAIL_USERNAME and MAIL_PASSWORD):
 	raise TypeError("MAIL_USERNAME and MAIL_PASSWORD must be defined")
 
 # Celery / Redis
+CELERYBEAT_SCHEDULE = {
+    'email-updates': {
+        'task': 'app.email_.email_new_posts',
+        'schedule': timedelta(seconds=3)
+    },
+}
+
 if not os.environ.get('REDIS_URL'):
 	CELERY_BROKER_URL = 'redis://localhost:6379/0'
-	result_backend = 'redis://localhost:6379/0'
+	CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 else:
 	CELERY_BROKER_URL = os.environ['REDIS_URL']
-	result_backend = os.environ['REDIS_URL']
+	CELERY_RESULT_BACKEND = os.environ['REDIS_URL']
 
