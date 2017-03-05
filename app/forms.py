@@ -1,3 +1,4 @@
+from .models import User
 from flask_wtf import FlaskForm
 from wtforms import StringField, BooleanField, PasswordField
 from wtforms.validators import DataRequired, EqualTo
@@ -30,9 +31,17 @@ class LoginForm(FlaskForm):
 class SignupForm(FlaskForm):
     email = StringField('email', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired(),
-                                                     EqualTo('confirm', message='Passwords must match')])
+                             EqualTo('confirm', message='Passwords must match')])
     confirm = PasswordField('Repeat Password')
 
+    def validate(self):
+        if not FlaskForm.validate(self):
+            return False
+
+        user = User.query.get(str(self.email.data))
+        if user is not None:
+            self.email.errors.append('Username already taken')
+            return False
 
 class SearchForm(FlaskForm):
     search_terms = StringField('search_terms', validators=[DataRequired()])
