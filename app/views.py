@@ -49,7 +49,7 @@ def search():
 @login_required
 def results(search_terms=None):
     if search_terms == None:
-        flash("Please ")
+        flash("Please search to see results")
         return redirect(url_for('search'))
     # TODO modify this so that it can be used to return multiple pages:
     search_term_list = parse_terms(search_terms)
