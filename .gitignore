@@ -36,12 +36,15 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
-*.swp
 
-# IDE and venv files #
-######################
-.idea/
+# python files #
+################
+__pycache__/
 venv/
+
+# IDE files #
+#############
+.idea/
 
 # venv and project specific files #
 ###################################
