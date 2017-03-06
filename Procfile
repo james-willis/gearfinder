@@ -1,4 +1,5 @@
 web: gunicorn app:app
-worker: celery -A app.celery worker -B --loglevel=info
-init: python db_create.py
-upgrade: python db_upgrade.py
+worker: flask start_worker
+verbose_worker: flask start_worker_verbose
+init: flask db_create
+upgrade: flask db_upgrade
