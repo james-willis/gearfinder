@@ -51,18 +51,17 @@ class LoginForm(FlaskForm):
 
 
 class SignupForm(FlaskForm):
-    email = StringField('email', validators=[DataRequired()])
-    password = PasswordField('password', validators=[DataRequired(),
-                             EqualTo('confirm', message='Passwords must match')])
+    email = StringField('email')
+    password = PasswordField('password')
     confirm = PasswordField('Repeat Password')
 
     def validate(self):
-        if not FlaskForm.validate(self):
-            return False
-
         user = User.query.get(str(self.email.data))
         if user is not None:
-            self.email.errors.append('Username already taken')
+            flash("Username already taken")
+            return False
+        if self.password.data != self.confirm.data:
+            flash("Passwords must match")
             return False
         return True
 
