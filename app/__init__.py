@@ -73,18 +73,18 @@ def migrate_db():
 
 @app.cli.command()
 def start_worker():
-	script="celery -A app.celery worker -B"
+	script = "celery -A app.celery worker -B"
 	os.system(script)
 
 
 @app.cli.command()
 def start_worker_verbose():
-	script="celery -A app.celery worker -B --loglevel=info"
+	script = "celery -A app.celery worker -B --loglevel=info"
 	os.system(script)
 
 @app.cli.command(with_appcontext=False)
 def start_redis():
-	make_update_script_for_model = """
+	script = """
 	cd redis-stable
 	make
 	src/redis-server
