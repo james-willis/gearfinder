@@ -42,6 +42,7 @@ class SignupForm(FlaskForm):
         if user is not None:
             self.email.errors.append('Username already taken')
             return False
+        return True
 
 class SearchForm(FlaskForm):
     search_terms = StringField('search_terms', validators=[DataRequired()])
