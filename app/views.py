@@ -9,7 +9,6 @@ from .forms import AccountForm, EmailForm, LoginForm, SearchForm, SignupForm
 from .models import User
 from .mp_scanner import *
 
-
 @app.before_first_request
 def before_first_request():
     pass
