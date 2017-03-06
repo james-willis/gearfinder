@@ -25,6 +25,7 @@
             <label for="currentPassword" class ="sr-only">Current Password</label>
             {{ account_form.current_password(id="currentPassword", type="password",
                                              class="form-control top-list-element",
+                                             required="",
                                              placeholder="Current Password") }}
             {% for error in account_form.current_password.errors %}
             <span style="color: red;">[{{error}}]</span>

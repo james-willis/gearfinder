@@ -44,6 +44,10 @@ class User(db.Model):
     def set_password(self, raw_password):
         self.password = bcrypt.generate_password_hash(raw_password.encode('utf-8'))
 
+    def compare_password(self, password):
+        return bcrypt.check_password_hash(self.get_password(), str(password).encode('utf-8'))
+
+
     def set_email(self, email):
         self.email = email
 

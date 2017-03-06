@@ -61,19 +61,18 @@ def results(search_terms=None):
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
+    form = LoginForm()
+    
     if g.user is not None and g.user.is_authenticated:
         flash("Already signed in")
         return redirect(url_for('index'))
-    form = LoginForm()
+
     if form.validate_on_submit():
         user = User.query.get(str(form.email.data))
-        if user and bcrypt.check_password_hash(user.get_password(), str(form.password.data).encode('utf-8')):
-            # TODO move validation to LoginForm class
-            login_user(user, remember=True)
-            session['remember_me'] = form.remember_me.data
-            return redirect(url_for('search'))
-        else:
-            flash('Wrong username/password combination')
+        login_user(user, remember=True)
+        session['remember_me'] = form.remember_me.data
+        return redirect(url_for('search'))
+
     return render_template('login.html',
                            title='Sign In',
                            form=form)
@@ -126,8 +125,7 @@ def update_credentials():
     user = g.user
     account_form = AccountForm()
 
-    if account_form.validate_on_submit() and (bool(account_form.new_email.data) or bool(account_form.new_password.data)) \
-            and bcrypt.check_password_hash(user.get_password(), str(account_form.current_password.data)):
+    if account_form.validate_on_submit():
         # TODO move validation to AccountForm class
 
         if account_form.new_email.data:
@@ -152,8 +150,6 @@ def update_email_settings():
     form = EmailForm()
 
     if form.validate_on_submit():
-        # TODO make validation function that makes sure if opted in then you need to have non null search terms either
-        # in db or on form
 
         if form.email_opt_in.data != user.email_opt_in:
             if form.email_opt_in.data:

@@ -1,4 +1,5 @@
 from .models import User
+from flask import flash, g
 from flask_wtf import FlaskForm
 from wtforms import StringField, BooleanField, PasswordField
 from wtforms.validators import DataRequired, EqualTo
@@ -7,9 +8,23 @@ from wtforms.validators import DataRequired, EqualTo
 class AccountForm(FlaskForm):
     #TODO make stricter validation requirements
     new_email = StringField('email')
-    current_password = PasswordField('current_password', validators=[DataRequired()])
-    new_password = PasswordField('new_password', validators=[EqualTo('confirm', message='Passwords must match')])
+    current_password = PasswordField('current_password')
+    new_password = PasswordField('new_password')
     confirm = PasswordField('Repeat Password')
+    
+    def validate(self):
+        user = g.user
+
+        if not (self.new_password.data or self.new_email.data):
+            return False
+        if not user.compare_password(self.current_password.data):
+            flash("Password Incorrect")
+            return False
+        if self.new_password.data != self.confirm.data:
+            flash("New passwords must match")
+            return False
+        return True
+
 
 
 class EmailForm(FlaskForm):
@@ -23,9 +38,16 @@ class EmailForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    email = StringField('email', validators=[DataRequired()])
-    password = PasswordField('password', validators=[DataRequired()])
+    email = StringField('email')
+    password = PasswordField('password')
     remember_me = BooleanField('remember_me', default=False)
+
+    def validate(self):
+        user = User.query.get(str(self.email.data))
+        if user and user.compare_password(self.password.data):
+            return True
+        flash("Wrong Password/Username Combination")
+        return False
 
 
 class SignupForm(FlaskForm):
