@@ -30,7 +30,6 @@ In your environment you will need to define three variables that the app will re
 export SECRET_KEY="super-secret-long-string" # Secret Key
 export EMAIL_USERNAME="\<username\>" # Username to log into the sending email account
 export EMAIL_PASSWORD="\<password\>" # The password to log into the sending email account
-export PORT="5000" # or any other valid port number
 ```
 
 [What is a secret key?](http://stackoverflow.com/questions/22463939/demystify-flask-app-secret-key)
@@ -45,13 +44,12 @@ in ```config.py``` Documentation for flask-mail can be found [here](https://pyth
 Note: Remember to set up environmental variables in each terminal window you have open!
 
 #### The Site
- Run the run.py script in your virtual environment:
+ User the flask run command:
 ```shell
 $ cd path/to/gearfinder
 $ source path/to/venv/bin/activate
-$ python run.py
+$ flask run
 ```
-
 
 Once the server is running you can access the site at [localhost:5000](localhost:5000)
 
@@ -62,21 +60,23 @@ Note: the redis-start.sh script will install redis if not already installed
 ```shell
 $ cd path/to/gearfinder
 $ source path/to/venv/bin/activate
-$ redis-start.sh
+$ flask start-redis
 ```
-
 0. spin up a worker:
 ```shell
 $ cd path/to/gearfinder
 $ source path/to/venv/bin/activate
-$ celery -A app.celery worker -B
+$ flask start-worker
 ```
 
 ## Running Tests
 To Come
 
 ## Deploying the app
-0. Make sure requirements.txt is up to date
+0. Make sure requirements.txt is up to date by running 
+```
+flask update-requirements
+```
 
 0. Create a merge request with the [github](https://github.com/james-willis/gearfinder) repository's master branch
 
