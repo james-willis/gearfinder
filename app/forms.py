@@ -18,10 +18,10 @@ class AccountForm(FlaskForm):
         if not (self.new_password.data or self.new_email.data):
             return False
         if not user.compare_password(self.current_password.data):
-            flash("Password Incorrect")
+            flash("Password Incorrect", 'danger')
             return False
         if self.new_password.data != self.confirm.data:
-            flash("New passwords must match")
+            flash("New passwords must match", 'danger')
             return False
         return True
 
@@ -46,7 +46,7 @@ class LoginForm(FlaskForm):
         user = User.query.get(str(self.email.data))
         if user and user.compare_password(self.password.data):
             return True
-        flash("Wrong Password/Username Combination")
+        flash("Wrong Password/Username Combination", 'danger')
         return False
 
 
@@ -58,10 +58,10 @@ class SignupForm(FlaskForm):
     def validate(self):
         user = User.query.get(str(self.email.data))
         if user is not None:
-            flash("Username already taken")
+            flash("Username already taken", 'danger')
             return False
         if self.password.data != self.confirm.data:
-            flash("Passwords must match")
+            flash("Passwords must match", 'danger')
             return False
         return True
 
