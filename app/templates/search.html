@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-    <form action="" method="post" name="index">
+    <form id="searchForm" action="" method="post" name="index">
         <h2>Search</h2>
         {{ form.hidden_tag() }}
 
@@ -10,16 +10,17 @@
                                     placeholder="Enter your Search Here") }}
         </fieldset>
 
-        <input class="btn btn-primary" type="submit" value="Search">
+        <input id="searchButton" class="btn btn-primary" type="button" value="Search">
 
-        {% if g.user.get_search_terms_str()%}
-            <a class="btn btn-primary" href="{{ url_for('results', search_terms=g.user.get_search_terms_str(), page='1') }}">
+        {% if g.user.   search_terms%}
+            <a class="btn btn-primary" href="{{ url_for('results', search_terms=g.user.search_terms, page='1') }}">
                 See Subscribed Search
             </a>
             <br>
-            <small>Your subscribed search is "{{ g.user.get_search_terms_str() }}"</small>
+            <small>Your subscribed search is "{{ g.user.search_terms }}"</small>
             <br>
             <small><a href="{{ url_for('account') }}">Update Subscribed Search</a></small>
         {% endif %}
     </form>
+    <ul id="results" class="list-group"></ul>
 {% endblock %}

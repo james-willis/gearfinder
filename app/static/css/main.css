@@ -11,6 +11,7 @@ body {
 .container-fluid {
   margin-right: auto;
   margin-left: auto;
+  margin-bottom: 20px;
   max-width: 600px;
 }
 

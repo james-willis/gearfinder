@@ -24,6 +24,10 @@ def before_request():
     g.user = current_user
 
 
+@app.route('/json/')
+def json():
+    return render_template('json.html')
+
 # Routing functions
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index/', methods=['GET', 'POST'])
@@ -48,7 +52,6 @@ def search():
 
 
 @app.route('/results/<string:search_terms>/<int:page>/')
-@login_required
 def results(search_terms=None, page=1):
     search_term_list = parse_terms(search_terms)
     posts = get_matching_posts(search_term_list, get_forum_page(page))
