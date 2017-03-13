@@ -52,7 +52,8 @@ def search():
 def results(search_terms=None, page=1):
     search_term_list = parse_terms(search_terms)
     posts = get_matching_posts(search_term_list, get_forum_page(page))
-    return jsonify({x.title: x.link for x in posts})
+
+    return jsonify({post.title: post.link for post in posts})
 
 
 @app.route('/login/', methods=['GET', 'POST'])
@@ -125,11 +126,11 @@ def update_credentials():
         # TODO move validation to AccountForm class
 
         if account_form.new_email.data:
-            user.set_email(account_form.new_email.data)
+            user.email = account_form.new_email.data
             flash('Email Updated', NOTIFICATION)
 
         if account_form.new_password.data:
-            user.set_password(account_form.new_password.data)
+            user.update_password(account_form.new_password.data)
             flash('Password Updated', NOTIFICATION)
 
         db.session.commit()
@@ -153,10 +154,10 @@ def update_email_settings():
             else:
                 flash('Unsubscribed from Emails', NOTIFICATION)
 
-            user.set_email_opt_in(form.email_opt_in.data)
+            user.email_opt_in = form.email_opt_in.data
 
         if form.search_terms.data and form.search_terms.data != user.search_terms:
-            user.set_search_terms(form.search_terms.data)
+            user.search_terms = form.search_terms.data
             flash('Subscribed Search Updated', NOTIFICATION)
 
         db.session.commit()

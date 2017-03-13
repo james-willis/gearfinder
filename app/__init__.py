@@ -20,6 +20,3 @@ lm.login_view = 'login'
 mail = Mail(app)
 
 from app import views, models, cmd_scripts
-
-# cli commands are not recognized in the other folder
-# keeping here until I figure that out

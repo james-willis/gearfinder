@@ -12,10 +12,10 @@ class User(db.Model):
 
 
     def __init__(self, email, password):
-        self.set_email(email)
-        self.set_password(password)
-        self.set_search_terms('')
-        self.set_email_opt_in(False)
+        self.email = email
+        self.password = update_password(password)
+        self.search_terms = ''
+        self.email_opt_in = False
 
     @property
     def is_authenticated(self):
@@ -29,33 +29,15 @@ class User(db.Model):
     def is_anonymous(self):
         return False
 
-    def get_id(self):
-        return str(self.email)
-
-    def get_search_terms_str(self):
-        return self.search_terms
-
-    def get_search_terms(self):
-        return list(filter(bool, split('[.,\s]', str(self.search_terms))))
-
-    def get_password(self):
-        return self.password
-
-    def set_password(self, raw_password):
+    def update_password(self, raw_password):
+        '''
+        A function that salt and hashs a new password, and updates the database with the new salted hash
+        '''
+        
         self.password = bcrypt.generate_password_hash(raw_password.encode('utf-8'))
 
-    def compare_password(self, password):
+    def compare_passwords(self, password):
         return bcrypt.check_password_hash(self.get_password(), str(password).encode('utf-8'))
-
-
-    def set_email(self, email):
-        self.email = email
-
-    def set_search_terms(self, terms):
-        self.search_terms = terms
-
-    def set_email_opt_in(self, bool):
-        self.email_opt_in = bool
 
     def __repr__(self):
         return '<User %r>' % self.email
