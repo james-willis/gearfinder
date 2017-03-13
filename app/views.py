@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, session, url_for, request, g
+from flask import render_template, flash, jsonify, redirect, session, url_for, request, g
 from flask_login import login_user, logout_user, current_user, login_required
 from os.path import isfile
 from re import split
@@ -9,8 +9,8 @@ from .forms import AccountForm, EmailForm, LoginForm, SearchForm, SignupForm
 from .models import User
 from .mp_scanner import *
 
-_ERROR = 'danger'
-_NOTIFICATION = 'info'
+ERROR = 'danger'
+NOTIFICATION = 'info'
 
 
 @app.before_first_request
@@ -38,29 +38,21 @@ def search():
     user = g.user
     form = SearchForm()
     if form.validate_on_submit():
-        return redirect(url_for('results', search_terms=form.search_terms.data))
+        return redirect(url_for('results', search_terms=form.search_terms.data, page=1))
     if request.method == 'POST':
-        flash('Empty Search', _ERROR)
+        flash('Empty Search', ERROR)
     return render_template('search.html',
                            title='Search',
                            form=form,
                            user=user)
 
 
-@app.route('/results')
-@app.route('/results/<string:search_terms>/')
+@app.route('/results/<string:search_terms>/<int:page>/')
 @login_required
-def results(search_terms=None):
-    if search_terms == None:
-        flash("Please search to see results", _ERROR)
-        return redirect(url_for('search'))
-    # TODO modify this so that it can be used to return multiple pages:
+def results(search_terms=None, page=1):
     search_term_list = parse_terms(search_terms)
-    posts = get_matching_posts(search_term_list, get_forum_page(1))
-    return render_template('results.html',
-                           title='search results',
-                           posts=posts,
-                           search_terms=search_terms)
+    posts = get_matching_posts(search_term_list, get_forum_page(page))
+    return jsonify({x.title: x.link for x in posts})
 
 
 @app.route('/login/', methods=['GET', 'POST'])
@@ -68,7 +60,7 @@ def login():
     form = LoginForm()
     
     if g.user is not None and g.user.is_authenticated:
-        flash("Already signed in", _NOTIFICATION)
+        flash("Already signed in", NOTIFICATION)
         return redirect(url_for('index'))
 
     if form.validate_on_submit():
@@ -92,7 +84,7 @@ def logout():
 def sign_up():
     # redirect signed in users away from sign up page
     if g.user is not None and g.user.is_authenticated:
-        flash("Already signed in ", _NOTIFICATION)
+        flash("Already signed in ", NOTIFICATION)
         return redirect(url_for('index'))
 
     form = SignupForm()
@@ -103,7 +95,7 @@ def sign_up():
         db.session.add(user)
         db.session.commit()
 
-        flash('You may now log in', _NOTIFICATION)
+        flash('You may now log in', NOTIFICATION)
         return redirect(url_for('login'))
 
     return render_template('sign_up.html',
@@ -134,11 +126,11 @@ def update_credentials():
 
         if account_form.new_email.data:
             user.set_email(account_form.new_email.data)
-            flash('Email Updated', _NOTIFICATION)
+            flash('Email Updated', NOTIFICATION)
 
         if account_form.new_password.data:
             user.set_password(account_form.new_password.data)
-            flash('Password Updated', _NOTIFICATION)
+            flash('Password Updated', NOTIFICATION)
 
         db.session.commit()
         return redirect(url_for('logout'))
@@ -157,15 +149,15 @@ def update_email_settings():
 
         if form.email_opt_in.data != user.email_opt_in:
             if form.email_opt_in.data:
-                flash('Subscribed to Emails', _NOTIFICATION)
+                flash('Subscribed to Emails', NOTIFICATION)
             else:
-                flash('Unsubscribed from Emails', _NOTIFICATION)
+                flash('Unsubscribed from Emails', NOTIFICATION)
 
             user.set_email_opt_in(form.email_opt_in.data)
 
         if form.search_terms.data and form.search_terms.data != user.search_terms:
             user.set_search_terms(form.search_terms.data)
-            flash('Subscribed Search Updated', _NOTIFICATION)
+            flash('Subscribed Search Updated', NOTIFICATION)
 
         db.session.commit()
 

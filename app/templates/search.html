@@ -13,7 +13,7 @@
         <input class="btn btn-primary" type="submit" value="Search">
 
         {% if g.user.get_search_terms_str()%}
-            <a class="btn btn-primary" href="{{ url_for('results', search_terms=g.user.get_search_terms_str()) }}">
+            <a class="btn btn-primary" href="{{ url_for('results', search_terms=g.user.get_search_terms_str(), page='1') }}">
                 See Subscribed Search
             </a>
             <br>
