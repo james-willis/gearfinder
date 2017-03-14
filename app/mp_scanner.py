@@ -7,7 +7,7 @@ _FREE_AND_FOR_SALE_URL = 'http://www.mountainproject.com' \
 _MOUNTAIN_PROJECT_URL = 'http://www.mountainproject.com'
 _NEW_POST_TEXT = 'moments ago'
 _POSTS_PER_PAGE = 25
-
+_MAX_PG_NUM = 40
 
 class Post:
     def __init__(self, title='', link='', age="", replies=0):
@@ -89,6 +89,15 @@ def get_matching_posts(parameters, tree, flags=''):
             posts.append(post)
 
     return posts
+
+
+def get_n_matching_posts(parameters, n, i):
+    posts = []
+    # there are 40 pages of results
+    while len(posts) < n and i < _MAX_PG_NUM:
+        posts += get_matching_posts(parameters, get_forum_page(i))
+        i += 1
+    return i, posts
 
 
 def write_links(matches):

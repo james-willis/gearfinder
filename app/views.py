@@ -23,11 +23,6 @@ def before_first_request():
 def before_request():
     g.user = current_user
 
-
-@app.route('/json/')
-def json():
-    return render_template('json.html')
-
 # Routing functions
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index/', methods=['GET', 'POST'])
@@ -40,6 +35,7 @@ def index():
 @login_required
 def search():
     user = g.user
+    session['page'] = 1
     form = SearchForm()
     if form.validate_on_submit():
         return redirect(url_for('results', search_terms=form.search_terms.data, page=1))
@@ -51,11 +47,13 @@ def search():
                            user=user)
 
 
-@app.route('/results/<string:search_terms>/<int:page>/')
-def results(search_terms=None, page=1):
+@app.route('/results/<string:search_terms>')
+def results(search_terms=None):
+    if 'page' not in session:
+        session['page'] = 1
     search_term_list = parse_terms(search_terms)
-    posts = get_matching_posts(search_term_list, get_forum_page(page))
-
+    session['page'], posts = get_n_matching_posts(search_term_list, 25, session['page'])
+    print(session['page'])
     return jsonify({post.title: post.link for post in posts})
 
 

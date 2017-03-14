@@ -13,7 +13,7 @@
         <input id="searchButton" class="btn btn-primary" type="button" value="Search">
 
         {% if g.user.   search_terms%}
-            <a class="btn btn-primary" href="{{ url_for('results', search_terms=g.user.search_terms, page='1') }}">
+            <a class="btn btn-primary" href="{{ url_for('results', search_terms=g.user.search_terms) }}">
                 See Subscribed Search
             </a>
             <br>
