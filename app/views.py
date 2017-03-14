@@ -37,8 +37,6 @@ def search():
     user = g.user
     session['page'] = 1
     form = SearchForm()
-    if form.validate_on_submit():
-        return redirect(url_for('results', search_terms=form.search_terms.data, page=1))
     if request.method == 'POST':
         flash('Empty Search', ERROR)
     return render_template('search.html',
@@ -54,7 +52,9 @@ def results(search_terms=None):
     search_term_list = parse_terms(search_terms)
     session['page'], posts = get_n_matching_posts(search_term_list, 25, session['page'])
     print(session['page'])
-    return jsonify({post.title: post.link for post in posts})
+    return render_template('results.html',
+                            posts=posts,
+                            end=(session['page'] >= 40))
 
 
 @app.route('/login/', methods=['GET', 'POST'])
