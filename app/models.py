@@ -13,9 +13,10 @@ class User(db.Model):
 
     def __init__(self, email, password):
         self.email = email
-        self.password = update_password(password)
         self.search_terms = ''
         self.email_opt_in = False
+        self.update_password(password)
+
 
     @property
     def is_authenticated(self):
@@ -29,14 +30,21 @@ class User(db.Model):
     def is_anonymous(self):
         return False
 
+    def get_id(self):
+        return str(self.email)
+
     def update_password(self, raw_password):
         '''
         A function that salt and hashs a new password, and updates the database with the new salted hash
         '''
         
         self.password = bcrypt.generate_password_hash(raw_password.encode('utf-8'))
+    
+    def get_password(self):
+        return self.password
 
     def compare_passwords(self, password):
+        print(type(password))
         return bcrypt.check_password_hash(self.get_password(), str(password).encode('utf-8'))
 
     def __repr__(self):
