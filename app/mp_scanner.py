@@ -37,14 +37,15 @@ class Post:
         return False
 
     def is_new_match(self, parameters):
-        # TODO fix this, returns any post recently replied to
         """
         Determines if a post contains one of the search parameters and is new (< 5
         minutes of age, 0 replies), and is not a buyer thread.
         :param parameters: a list of strs containing the search parameters
         :return: a bool indicating if the post is a match
-                """
-        return self.is_match(parameters) and self.age == _NEW_POST_TEXT and self.replies == 0
+        """
+
+        recent_reply = self.age == _NEW_POST_TEXT or int(self.age[0]) <= 5
+        return self.is_match(parameters) and recent_reply and self.replies == 0
 
 
 def get_forum_page(pg_num):
@@ -73,15 +74,21 @@ def get_matching_posts(parameters, tree, flags=''):
     :return: a list of Posts that match at least one search parameter
     """
     posts = []
+    post_root ="//table/tr"
+    titles = tree.xpath(post_root + "/td[1]/div/a/strong/text()")
+    links = tree.xpath(post_root + "/td[1]/div/a/attribute::href")
+    ages = [x.strip() for x in tree.xpath(post_root + "/td[3]/a/text()")]
+
+    num_replies = [int(n.strip()) for n in tree.xpath(post_root + "/td[2]/text()")]
 
     for i in range(1, _POSTS_PER_PAGE):  # Xpath uses 1 indexed arrays
         post = Post()
 
-        post_root = '(//tr[@bgcolor=\'#ffffff\' or @bgcolor=\'#f2f2f2\'])[{}]'.format(i)
-        post.title = tree.xpath(post_root + '/td[3]/b/a/text()')[0]
-        post.link = _MOUNTAIN_PROJECT_URL + tree.xpath(post_root + '/td[3]/b/a/attribute::href')[0]
-        post.age = tree.xpath(post_root + "/td[7]/small/text()")[0]
-        post.replies = tree.xpath(post_root + "/td[4]/text()")[0]
+        
+        post.title = titles[i]
+        post.link = links[i]
+        post.age = ages[i]
+        post.replies = num_replies[i]
 
         if 'n' not in flags and post.is_match(parameters):
             posts.append(post)
