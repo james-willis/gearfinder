@@ -2,10 +2,9 @@
 	{% for post in posts %}
 	  <a href="{{ post.link }}" target="_blank"><li class="list-group-item">{{ post.title }}</li></a>
 	{% endfor %}
+	<li id="endMarker" class="list-group-item">No More Posts</li>
+{% else %}
+	<li>There are no results. This could be caused by a bug or lack of matches</li>
 {% endif %}
 
-{% if end %} 
-	<li id="endMarker" class="list-group-item">NO MORE POSTS</li>
-{% else %}
-	<input id="loadMore" type="button" value="Search">
-{% endif %}	
+

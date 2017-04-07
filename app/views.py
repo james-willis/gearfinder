@@ -1,4 +1,5 @@
-from flask import render_template, flash, jsonify, redirect, session, url_for, request, g
+from flask import render_template, flash, jsonify, redirect, session, url_for, \
+request, g
 from flask_login import login_user, logout_user, current_user, login_required
 from os.path import isfile
 from re import split
@@ -16,7 +17,7 @@ NOTIFICATION = 'info'
 @app.before_first_request
 def before_first_request():
     pass
-    # TODO make this initialize db is db isnt initalized
+    # TODO make this initialize db if db isnt initalized
 
 
 @app.before_request
@@ -47,14 +48,11 @@ def search():
 
 @app.route('/results/<string:search_terms>')
 def results(search_terms=None):
-    if 'page' not in session:
-        session['page'] = 1
+
     search_term_list = parse_terms(search_terms)
-    session['page'], posts = get_n_matching_posts(search_term_list, 25, session['page'])
-    print(session['page'])
+    posts = get_all_matching_posts(search_term_list)
     return render_template('results.html',
-                            posts=posts,
-                            end=(session['page'] >= 40))
+                            posts=posts)
 
 
 @app.route('/login/', methods=['GET', 'POST'])
@@ -110,7 +108,8 @@ def sign_up():
 @login_required
 def account():
     account_form = AccountForm()
-    email_form = EmailForm(search_terms=g.user.search_terms, email_opt_in=g.user.email_opt_in)
+    email_form = EmailForm(search_terms=g.user.search_terms,
+                           email_opt_in=g.user.email_opt_in)
     return render_template('account.html',
                            title='Account Settings',
                            account_form=account_form,
@@ -158,7 +157,8 @@ def update_email_settings():
 
             user.email_opt_in = form.email_opt_in.data
 
-        if form.search_terms.data and form.search_terms.data != user.search_terms:
+        if form.search_terms.data and \
+        form.search_terms.data != user.search_terms:
             user.search_terms = form.search_terms.data
             flash('Subscribed Search Updated', NOTIFICATION)
 
