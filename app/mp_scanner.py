@@ -43,8 +43,7 @@ class Post:
         :param parameters: a list of strs containing the search parameters
         :return: a bool indicating if the post is a match
         """
-
-        recent_reply = self.age == _NEW_POST_TEXT or int(self.age[0]) <= 5
+        recent_reply = (self.age == _NEW_POST_TEXT or (int(self.age[0]) <= 5 and self.age[2:6] == "mins"))
         return self.is_match(parameters) and recent_reply and self.replies == 0
 
 
@@ -81,9 +80,8 @@ def get_matching_posts(parameters, tree, flags=''):
 
     num_replies = [int(n.strip()) for n in tree.xpath(post_root + "/td[2]/text()")]
 
-    for i in range(1, _POSTS_PER_PAGE):  # Xpath uses 1 indexed arrays
+    for i in range(_POSTS_PER_PAGE):
         post = Post()
-
         
         post.title = titles[i]
         post.link = links[i]
