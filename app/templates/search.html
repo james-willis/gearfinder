@@ -1,7 +1,7 @@
 <!-- extend base layout -->
 {% extends "base.html" %}
 {% block content %}
-    <form id="searchForm" action="" method="post" name="index">
+    <form id="searchForm" action="#" onsubmit="return submitSearch()" method="post" name="index">
         <h2>Search</h2>
         {{ form.hidden_tag() }}
 
