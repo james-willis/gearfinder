@@ -44,7 +44,7 @@ class Post:
         :return: a bool indicating if the post is a match
         """
 
-        recent_reply = self.age == _NEW_POST_TEXT or int(self.age[0]) <= 5
+        recent_reply = (self.age == _NEW_POST_TEXT or (int(self.age[0]) <= 5 and self.age[2:6] == "mins"))
         return self.is_match(parameters) and recent_reply and self.replies == 0
 
 
