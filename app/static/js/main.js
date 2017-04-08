@@ -1,8 +1,16 @@
 $(document).ready(function(){
-    $("#searchButton").click(submitSearch);
+    $("#searchForm").submit(function(){
+        sendSearch($("#search").val());
+    });
+    $("#searchButton").click(function(){
+        sendSearch($("#search").val());
+    });
+    $("#savedSearchButton").click(function(){
+        sendSearch($("#savedSearchTerms").text());
+    });
 });
 
-function submitSearch(){
+function sendSearch(search_terms){
     // remove old warning box
     $(".alert").remove();
 
@@ -10,7 +18,6 @@ function submitSearch(){
     $("#results").html('');
 
     // get search terms from form and request the results
-    var search_terms = $("#search").val();
     if (search_terms) {
         load_posts(search_terms);
     }

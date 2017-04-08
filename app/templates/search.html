@@ -1,26 +1,25 @@
 <!-- extend base layout -->
 {% extends "base.html" %}
 {% block content %}
-    <form id="searchForm" action="#" onsubmit="return submitSearch()">
+    <form id="searchForm" action="#">
         <h2>Search</h2>
         <fieldset class="form-group">
             <label for="search" class ="sr-only">Search Terms</label>
             <input id="search" class="form-control" type="search", autofocus=""
                                     placeholder="Enter your Search Here">
         </fieldset>
-
-        <input id="searchButton" class="btn btn-primary" type="button" value="Search">
+    </form>
+    <button id="searchButton" class="btn btn-primary" type="button">Search</button>
 
         {% if g.user.search_terms %}
-            <a class="btn btn-primary" href="{{ url_for('results', search_terms=g.user.search_terms) }}">
+            <button id="savedSearchButton" class="btn btn-primary" action="#">
                 See Subscribed Search
-            </a>
+            </button>
             <br>
-            <small>Your subscribed search is "{{ g.user.search_terms }}"</small>
+            <small>Your subscribed search is "<span id="savedSearchTerms">{{ g.user.search_terms }}</span>"</small>
             <br>
             <small><a href="{{ url_for('account') }}">Update Subscribed Search</a></small>
         {% endif %}
-    </form>
     <ul id="results" class="list-group"></ul>
     <a href="#top"><button id="returnTop" class="btn btn-secondary">Top</button></a>
 {% endblock %}
