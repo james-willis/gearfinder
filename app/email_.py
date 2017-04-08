@@ -19,7 +19,7 @@ def email_new_posts():
         posts = get_matching_posts(user.get_search_terms(), tree, "n")
         if posts and user.email_opt_in:
             message = {
-                "subject": "test subject",
+                "subject": "New Mountain Project Items for Sale",
                 "sender": _SENDING_EMAIL,
                 "recipients": [user.email],
                 "html": _MSG_BODY

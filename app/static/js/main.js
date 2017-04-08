@@ -22,7 +22,7 @@ function submitSearch(){
 function load_posts(terms) {
     // build url and add loading message
    	var url = "/results/" + terms;
-	$('#results').append('<li id="loadMarker" class="list-group-item">LOADING</li>');
+	$('#results').append('<li id="loadMarker" class="list-group-item">LOADING (this may take a minute)</li>');
 
     // request results and add them to the DOM
 	$("#results").load(url, searchCallback);
