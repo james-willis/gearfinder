@@ -2,14 +2,13 @@ from lxml import html
 
 import requests
 
-_FREE_AND_FOR_SALE_URL = 'http://www.mountainproject.com' \
-                         '/v/for-sale--for-free--want-to-buy/103989416'
+_FREE_AND_FOR_SALE_URL = 'https://www.mountainproject.com/forum/103989416/for-sale-for-free-want-to-buy'
 _MOUNTAIN_PROJECT_URL = 'http://www.mountainproject.com'
 _NEW_POST_TEXT = 'moments ago'
-_POSTS_PER_PAGE = 25
-_MAX_PG_NUM = 40
+_POSTS_PER_PAGE = 40
+_MAX_PG_NUM = 54
 
-class Post:
+class Post(object):
     """
     A class to represent a Mountain Project forum post, with the information
     and methods needed to determine if it is a match and if it is a new post
@@ -78,8 +77,7 @@ def get_forum_page(pg_num):
     :return: an html object of the requested page of posts from Mountain
         Project's Free and for Sale forum
     """
-
-    url = _FREE_AND_FOR_SALE_URL + '__' + str(pg_num)
+    url = _FREE_AND_FOR_SALE_URL + '?page=' + str(pg_num)
     page = requests.get(url)
     return html.fromstring(page.content)
 
@@ -97,25 +95,21 @@ def get_matching_posts(parameters, tree, flags=''):
     :return: a list of Posts that match at least one search parameter
     """
     posts = []
-    post_root ="//table/tr"
-    titles = tree.xpath(post_root + "/td[1]/div/a/strong/text()")
-    links = tree.xpath(post_root + "/td[1]/div/a/attribute::href")
+    post_root = "//table/tr"
+    titles = tree.xpath(post_root + "/td[1]/div[1]/a/strong/text()")
+    links = tree.xpath(post_root + "/td[1]/div[1]/a/attribute::href")
     ages = [x.strip() for x in tree.xpath(post_root + "/td[3]/a/text()")]
     num_replies = [int(n.strip()) for n in tree.xpath(post_root + "/td[2]/text()")]
 
-    for i in range(_POSTS_PER_PAGE):
-        post = Post()
-        
-        post.title = titles[i]
-        post.link = links[i]
-        post.age = ages[i]
-        post.replies = num_replies[i]
+    i = 0
+    while i < len(titles):
+        post = Post(titles[i], links[i], ages[i], num_replies[i])
 
         if 'n' not in flags and post.is_match(parameters):
             posts.append(post)
         elif post.is_new_match(parameters):
             posts.append(post)
-
+        i += 1
     return posts
 
 

@@ -14,14 +14,17 @@
               crossorigin="anonymous">
         </script>
         <script src="/static/js/main.js"></script>
+
         {% if title %}
         <title>{{ title }} - Gearfinder</title>
         {% else %}
         <title>Gearfinder</title>
         {% endif %}
+        
     </head>
 
     <body>
+        <a name="top"></a>
         <nav class="navbar navbar-toggleable-md navbar-light bg-faded fixed-top">
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -43,13 +46,15 @@
         </nav>
         <!-- Alerts -->
         <div class="container-fluid">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}", role="alert">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
+            <div id="flashes">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}", role="alert">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
         <!-- Page Body -->
         {% block content %}{% endblock %}
         </div>

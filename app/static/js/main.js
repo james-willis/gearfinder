@@ -10,8 +10,13 @@ function submitSearch(){
     $("#results").html('');
 
     // get search terms from form and request the results
-    var search_terms = $("#searchForm").serializeArray()[1].value;
-    load_posts(search_terms);
+    var search_terms = $("#search").val();
+    if (search_terms) {
+        load_posts(search_terms);
+    }
+    else {
+        $("#flashes").append('<div class="alert alert-danger", role="alert">Search must not be empty</div>');
+    }
 }
 
 function load_posts(terms) {

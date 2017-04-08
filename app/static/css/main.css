@@ -35,7 +35,15 @@ padding: 60px 15px 0px;
   	border-radius: 0px;
 }
 
-/* sign-in & sign up stuff*/
+/* search stuff */
+#returnTop {
+	position: fixed;
+	bottom: 80px;
+  	right: 10px;
+}
+
+
+/* sign-in & sign up stuff */
 
 .form-signin {
   	max-width: 330px;

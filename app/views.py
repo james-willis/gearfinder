@@ -1,14 +1,12 @@
-from flask import render_template, flash, jsonify, redirect, session, url_for, \
-request, g
-from flask_login import login_user, logout_user, current_user, login_required
-from os.path import isfile
 from re import split
 
-from app import app, bcrypt, db, lm
-from .email_ import start_mail_thread
+from flask import render_template, flash, redirect, session, url_for, \
+request, g
+from flask_login import login_user, logout_user, current_user, login_required
+from app import app, db, lm
 from .forms import AccountForm, EmailForm, LoginForm, SearchForm, SignupForm
 from .models import User
-from .mp_scanner import *
+from .mp_scanner import get_all_matching_posts
 
 ERROR = 'danger'
 NOTIFICATION = 'info'
@@ -32,33 +30,29 @@ def index():
                            title='Home')
 
 
-@app.route('/search/', methods=['GET', 'POST'])
+@app.route('/search/', methods=['GET'])
 @login_required
 def search():
     user = g.user
-    session['page'] = 1
-    form = SearchForm()
-    if request.method == 'POST':
-        flash('Empty Search', ERROR)
     return render_template('search.html',
                            title='Search',
-                           form=form,
                            user=user)
 
 
 @app.route('/results/<string:search_terms>')
 def results(search_terms=None):
-
     search_term_list = parse_terms(search_terms)
+    # try:
     posts = get_all_matching_posts(search_term_list)
+    # except:
+    #     posts = None
     return render_template('results.html',
-                            posts=posts)
-
+                           posts=posts)
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    
+
     if g.user is not None and g.user.is_authenticated:
         flash("Already signed in", NOTIFICATION)
         return redirect(url_for('index'))
