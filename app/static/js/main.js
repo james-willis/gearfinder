@@ -28,14 +28,9 @@ function sendSearch(search_terms){
 
 function load_posts(terms) {
     // build url and add loading message
-   	var url = "/results/" + terms;
+   	var url = "/results/" + encodeURIComponent(terms);
 	$('#results').append('<li id="loadMarker" class="list-group-item">LOADING (this may take a minute)</li>');
 
     // request results and add them to the DOM
-	$("#results").load(url, searchCallback);
-}
-
-function searchCallback(result){
-	// remove loading message
-    $("#loadMarker").remove();
+	$("#results").load(url);
 }

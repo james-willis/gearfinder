@@ -120,7 +120,6 @@ def get_all_matching_posts(parameters):
     a list of all posts
     """
     posts = []
-
     # there are 40 pages of results
     for i in range(1, _MAX_PG_NUM + 1):
         posts += get_matching_posts(parameters, get_forum_page(i))
