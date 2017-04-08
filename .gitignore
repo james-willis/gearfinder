@@ -42,10 +42,14 @@ Thumbs.db
 __pycache__/
 *.egg-info/
 venv/
+*.pyc
 
 # IDE files #
 #############
 .idea/
+.sublimelinterrc
+*.sublime-project
+*.sublime-workspace
 
 # venv and project specific files #
 ###################################

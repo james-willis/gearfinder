@@ -44,7 +44,7 @@ class LoginForm(FlaskForm):
 
     def validate(self):
         user = User.query.get(str(self.email.data))
-        if user and user.compare_password(self.password.data):
+        if user and user.compare_passwords(self.password.data):
             return True
         flash("Wrong Password/Username Combination", 'danger')
         return False

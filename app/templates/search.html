@@ -1,25 +1,26 @@
-{% extends 'base.html' %}
+<!-- extend base layout -->
+{% extends "base.html" %}
 {% block content %}
-    <form action="" method="post" name="index">
+    <form id="searchForm" action="#" onsubmit="return submitSearch()">
         <h2>Search</h2>
-        {{ form.hidden_tag() }}
-
         <fieldset class="form-group">
             <label for="search" class ="sr-only">Search Terms</label>
-            {{ form.search_terms(id="search", class="form-control", type="search", autofocus="",
-                                    placeholder="Enter your Search Here") }}
+            <input id="search" class="form-control" type="search", autofocus=""
+                                    placeholder="Enter your Search Here">
         </fieldset>
 
-        <input class="btn btn-primary" type="submit" value="Search">
+        <input id="searchButton" class="btn btn-primary" type="button" value="Search">
 
-        {% if g.user.get_search_terms_str()%}
-            <a class="btn btn-primary" href="{{ url_for('results', search_terms=g.user.get_search_terms_str()) }}">
+        {% if g.user.search_terms %}
+            <a class="btn btn-primary" href="{{ url_for('results', search_terms=g.user.search_terms) }}">
                 See Subscribed Search
             </a>
             <br>
-            <small>Your subscribed search is "{{ g.user.get_search_terms_str() }}"</small>
+            <small>Your subscribed search is "{{ g.user.search_terms }}"</small>
             <br>
             <small><a href="{{ url_for('account') }}">Update Subscribed Search</a></small>
         {% endif %}
     </form>
+    <ul id="results" class="list-group"></ul>
+    <a href="#top"><button id="returnTop" class="btn btn-secondary">Top</button></a>
 {% endblock %}

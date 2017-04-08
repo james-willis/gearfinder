@@ -1,10 +1,12 @@
-<!-- extend base layout -->
-{% extends "base.html" %}
-{% block content %}
-    <h2>Results for {{ search_terms }}</h2>
-    <ul class="list-group">
-    {% for post in posts %}
-      <a href="{{ post.link }}" target="_blank"><li class="list-group-item">{{ post.title }}</li></a>
-    {% endfor %}
-    </ul>
-{% endblock %}
+{% if posts %}
+	{% for post in posts %}
+	  <a href="{{ post.link }}" target="_blank"><li class="list-group-item">{{ post.title }}</li></a>
+	{% endfor %}
+	<li id="endMarker" class="list-group-item">No More Posts</li>
+{% elif posts is not none%}
+	<li class="list-group-item">No Search Results :(</li>
+{% else %}
+	<li class="list-group-item">Mountain Project unreachable</li>
+{% endif %}
+
+
