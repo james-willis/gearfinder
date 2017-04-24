@@ -1,9 +1,10 @@
 from threading import Thread, Timer
+from flask import render_template
 from flask_mail import Message
 
 from app import app, celery, db, mail
 from .models import User
-from .mp_scanner import *
+from .mp_scanner import get_forum_page, get_matching_posts
 
 _SENDING_EMAIL = app.config['SENDING_EMAIL']
 _MSG_BODY = '<h1>Gearfinder</h1><h2>Here are new Mountain Project For Sale posts:</h2>'
@@ -24,9 +25,8 @@ def email_new_posts():
                 "recipients": [user.email],
                 "html": _MSG_BODY
             }
-            
-            for link in write_links(posts):
-                message["html"] += "<br>{}".format(link)
+
+            message["html"] += render_template('results.html', posts=posts)
 
             send_email.delay(message)
 
