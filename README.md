@@ -8,7 +8,7 @@ inspired by or taken from [Miguel Grinberg's microblog tutorial](https://github.
 
 ## Known Bugs
 
-* Only the first page of Mountain Project's For Sale section can be searched at this time
+* Each search queries every page of the forum. A caching system needs to be implemented to prevent this
 
 ## Installing / Getting Started
 This program is written in Python 3.6. It is recommended you run the app in a virtual environment. If you are not
@@ -81,11 +81,6 @@ flask update-requirements
 0. Create a merge request with the [github](https://github.com/james-willis/gearfinder) repository's master branch
 
 0. The updated app will be deployed at [gearfinder.herokuapp.com](https://gearfinder.herokuapp.com) when the request is merged
-
-## Features
-* Improved buyer searching interface for Mountain Project's For Sale Forum
-* Email alerts of new for sale postings relevant to your interests
-
 
 ## Licensing
 The code in this project is licensed under the [MIT License](https://opensource.org/licenses/MIT)
