@@ -54,18 +54,24 @@ class Post(object):
         :return: a bool indicating if the post is a match
         
         >>> post = Post("abcd", "google.com", "4 mins ago", 0)
-        >>>post.is_match(["c"])
+        >>> post.is_match(["c"])
         True
         >>> post.is_match(["e"])
         False
         >>> post.replies = 2
         >>> post.is_new_match(["c"])
         False
+        >>> post.age = "15 minutes ago"
+        >>> post.replies = 0
+        >>> post.is_new_match(["c"])
+        False
+
 
         """
-        recent_reply = (self.age == _NEW_POST_TEXT or (self.age[0].isdigit() \
-                        and int(self.age[0]) <= 5 \
-                        and self.age[2:6] == "mins"))
+        #TODO split age text, convert first word to num, see if less than 5. se iff second word is mins 
+        age_words = self.age.split(" ")
+        recent_reply = (self.age == _NEW_POST_TEXT or (int(age_words[0]) <= 5 \
+                        and age_words[1] == "mins"))
 
         return self.is_match(parameters) and recent_reply and self.replies == 0
 
@@ -124,3 +130,7 @@ def get_all_matching_posts(parameters):
     for i in range(1, _MAX_PG_NUM + 1):
         posts += get_matching_posts(parameters, get_forum_page(i))
     return posts
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
