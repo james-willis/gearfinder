@@ -19,4 +19,4 @@ lm.init_app(app)
 lm.login_view = 'login'
 mail = Mail(app)
 
-from app import views, models, cmd_scripts
+from app import views, models, cmd_scripts, email_

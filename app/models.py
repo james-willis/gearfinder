@@ -47,6 +47,9 @@ class User(db.Model):
         print(type(password))
         return bcrypt.check_password_hash(self.get_password(), str(password).encode('utf-8'))
 
+    def parse_terms(self):
+        return list(filter(bool, split('[.,\s]', str(self.search_terms))))
+
     def __repr__(self):
         return '<User %r>' % self.email
 

@@ -32,7 +32,7 @@ if not (MAIL_USERNAME and MAIL_PASSWORD):
 # Celery / Redis
 CELERYBEAT_SCHEDULE = {
     'email-updates': {
-        'task': 'app.email_.email_new_posts',
+        'task': 'email_new_posts',
         'schedule': timedelta(seconds=300.0)
     },
 }

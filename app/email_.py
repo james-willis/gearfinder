@@ -10,14 +10,14 @@ _SENDING_EMAIL = app.config['SENDING_EMAIL']
 _MSG_BODY = '<h1>Gearfinder</h1><h2>Here are new Mountain Project For Sale posts:</h2>'
 
 
-@celery.task
+@celery.task(name="email_new_posts")
 def email_new_posts():
 
-    tree = get_forum_page(1)  # new posts always on first page
+    # new posts are always on first page
+    tree = get_forum_page(1) 
     users = db.session.query(User).all()
     for user in users:
-        
-        posts = get_matching_posts(user.get_search_terms(), tree, "n")
+        posts = get_matching_posts(user.parse_terms(), tree, "n")
         if posts and user.email_opt_in:
             message = {
                 "subject": "New Mountain Project Items for Sale",
