@@ -25,8 +25,8 @@ def email_new_posts():
                 "recipients": [user.email],
                 "html": _MSG_BODY
             }
-
-            message["html"] += render_template('results.html', posts=posts)
+            with app.app_context():
+                message["html"] += render_template('results.html', posts=posts)
 
             send_email.delay(message)
 
