@@ -68,7 +68,6 @@ class Post(object):
 
 
         """
-        #TODO split age text, convert first word to num, see if less than 5. se iff second word is mins 
         age_words = self.age.split(" ")
         recent_reply = (self.age == _NEW_POST_TEXT or (int(age_words[0]) <= 5 \
                         and age_words[1] == "mins"))
