@@ -7,10 +7,10 @@
         <p class="lead">Gearfinder is a tool to making buying used climbing equipment on Mountain Project Easier.</p>
         {% if g.user.is_authenticated %}
                 <a href="{{ url_for('search') }}"><button>Search</button></a>
-            {% else %}
-                <a href="{{ url_for('login') }}"><button>Sign In</button></a>
-                <a href="{{ url_for('sign_up') }}"><button>Sign Up</button></a>
-            {% endif %}
+        {% else %}
+            <a href="{{ url_for('login') }}"><button>Sign In</button></a>
+            <a href="{{ url_for('sign_up') }}"><button>Sign Up</button></a>
+        {% endif %}
       </div>
 
       <div class="row marketing">
