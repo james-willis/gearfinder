@@ -52,7 +52,7 @@ class Post(object):
         (< 5 minutes of age, 0 replies), and is not a buyer thread.
         :param parameters: a list of strs containing the search parameters
         :return: a bool indicating if the post is a match
-        
+
         >>> post = Post("abcd", "google.com", "4 mins ago", 0)
         >>> post.is_match(["c"])
         True
@@ -61,7 +61,7 @@ class Post(object):
         >>> post.replies = 2
         >>> post.is_new_match(["c"])
         False
-        >>> post.age = "15 minutes ago"
+        >>> post.age = "15 mins ago"
         >>> post.replies = 0
         >>> post.is_new_match(["c"])
         False
@@ -69,8 +69,8 @@ class Post(object):
 
         """
         age_words = self.age.split(" ")
-        recent_reply = (self.age == _NEW_POST_TEXT or (int(age_words[0]) <= 5 \
-                        and age_words[1] == "mins"))
+        recent_reply = (self.age == _NEW_POST_TEXT or (age_words[0].isdigit() and\
+                        int(age_words[0]) <= 5 and age_words[1] == "mins"))
 
         return self.is_match(parameters) and recent_reply and self.replies == 0
 
