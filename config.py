@@ -33,7 +33,7 @@ if not (MAIL_USERNAME and MAIL_PASSWORD):
 CELERYBEAT_SCHEDULE = {
     'email-updates': {
         'task': 'email_new_posts',
-        'schedule': timedelta(seconds=300.0)
+        'schedule': timedelta(seconds=360.0)
     },
 }
 
