@@ -6,8 +6,8 @@ from app import app, celery, db, mail
 from .models import User
 from .mp_scanner import get_forum_page, get_matching_posts
 
+_SUBJECT_LINE = "Gearfinder New Post Alert"
 _SENDING_EMAIL = app.config['SENDING_EMAIL']
-_MSG_BODY = '<h1>Gearfinder</h1><h2>Here are new Mountain Project For Sale posts:</h2>'
 
 
 @celery.task(name="email_new_posts")
@@ -20,13 +20,13 @@ def email_new_posts():
         posts = get_matching_posts(user.parse_terms(), tree, "n")
         if posts and user.email_opt_in:
             message = {
-                "subject": "New Mountain Project Items for Sale",
+                "subject": _SUBJECT_LINE,
                 "sender": _SENDING_EMAIL,
                 "recipients": [user.email],
-                "html": _MSG_BODY
+                "html": ""
             }
             with app.app_context():
-                message["html"] += render_template('results.html', posts=posts)
+                message["html"] = render_template('email.html', posts=posts)
 
             send_email.delay(message)
 
@@ -37,13 +37,3 @@ def send_email(message):
     with app.app_context():
         mail.send(msg)
     return message["recipients"][0]
-
-def mail_thread():
-    Timer(300, mail_thread).start()
-    email_new_posts()
-
-
-def start_mail_thread():
-    email_thread = Thread(target=mail_thread)
-    email_thread.daemon = True
-    email_thread.start()

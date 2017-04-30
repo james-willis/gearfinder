@@ -1,0 +1,8 @@
+<h1>Gearfinder</h1>
+<h2>New posts relevant to your search criteria:</h2>
+<ul>
+    {% for post in posts %}
+      <a href="{{ post.link }}" target="_blank"><li>{{ post.title }}</li></a>
+    {% endfor %}
+</ul>
+<small>Change email settings <a href="gearfinder.herokuapp.com/account">here</a></small>

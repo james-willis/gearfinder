@@ -25,7 +25,7 @@ MAIL_USE_TLS = False
 MAIL_USE_SSL = True
 MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
 MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
-SENDING_EMAIL = 'jimwillis95@gmail.com'
+SENDING_EMAIL = os.environ.get("MAIL_USERNAME")
 if not (MAIL_USERNAME and MAIL_PASSWORD):
 	raise TypeError("MAIL_USERNAME and MAIL_PASSWORD must be defined")
 
